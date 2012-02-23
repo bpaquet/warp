@@ -43,14 +43,14 @@ TO_BE_INSTALLED=""
 
 for i in \$SYS_DEPENDENCIES; do
   echo "Checking \$i"
-  RES=\$(dpkg -l | cut -d' ' -f 3 | grep \$i)
+  RES=\$(dpkg -l | cut -d' ' -f 3 | grep \$i || true)
   if [ "\$RES" = "" ]; then
     TO_BE_INSTALLED="\$TO_BE_INSTALLED \$i"
   fi
 done
 
 if [ "\$TO_BE_INSTALLED" != "" ]; then
-  echo "Failed : Please run aptitude install \$TO_BE_INSTALLED"
+  echo "Failed : Please run aptitude install\$TO_BE_INSTALLED"
   exit 1
 fi
 

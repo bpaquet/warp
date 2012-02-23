@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 TMPDIR=`mktemp -d /tmp/selfextract.XXXXXX`
