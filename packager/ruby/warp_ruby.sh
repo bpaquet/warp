@@ -39,11 +39,19 @@ if [ ! -d $FROM ]; then
   exit 1
 fi
 
+TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
+
+cp -r $FROM $TMPDIR
+
+FROM=$TMPDIR/$RUBY_VERSION
+
 if [ -d $FROM/gemsets ]; then
-  if [ "$PACKAGE_GEMSET" != "1" ]; then
-    echo "Do not package ruby version containing gemset !"
-    echo "If you are sure to do that, please set env variable to PACKAGE_GEMSET=1"
-    exit 1
+  if [ "$PACKAGE_GEMSETS" != "1" ]; then
+    echo "************************************"
+    echo "You have gemsets installed in this ruby. This package will not contains this gemsets."
+    echo "If you want to include this gemsets into the package, please set env variable to PACKAGE_GEMSETS=1"
+    echo "************************************"
+    rm -rf $FROM/gemsets
   fi
 fi
 
@@ -62,3 +70,5 @@ echo "Package ruby version from rbenv : $RUBY_VERSION"
 echo "Using system dependencies : $*"
 
 $WARP_HOME_SCRIPT $TARGET_NAME $FROM .rbenv/versions/$RUBY_VERSION $*
+
+rm -rf $FROM
