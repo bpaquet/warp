@@ -9,6 +9,20 @@ PATH_IN_HOME_DIRECTORY=$1
 shift
 SYS_DEPENDENCIES=$*
 
+SYNTAX="$0 archive_name src_directory path_in_home_directory [system dependencies]"
+if [ "$ARCHIVE_NAME" = "" ]; then
+  echo $SYNTAX
+  exit 1
+fi
+if [ ! -d $DIRECTORY ]; then 
+  echo $SYNTAX
+  exit 1
+fi
+if [ "$PATH_IN_HOME_DIRECTORY" = "" ]; then
+  echo $SYNTAX
+  exit 1
+fi
+
 echo "Creating self installer in home directory"
 echo "Archive name : $ARCHIVE_NAME"
 echo "From : $DIRECTORY"

@@ -11,6 +11,17 @@ cd $START_DIR
 NAME=$1
 DIRECTORY=$2
 
+SYNTAX="$0 archive_name directory"
+
+if [ "$NAME" = "" ]; then
+  echo $SYNTAX
+  exit 1
+fi
+if [ ! -d $DIRECTORY ]; then
+  echo $SYNTAX
+  exit 1
+fi
+
 echo "Creating self extracting archive $NAME from $DIRECTORY"
 
 ARCHIVE=$START_DIR/$NAME.tar.gz
