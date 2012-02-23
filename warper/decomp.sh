@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-TMPDIR=`mktemp -d /tmp/selfextract.XXXXXX`
+TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
 
 echo ""
 echo "This is a WARP self extracting installer"

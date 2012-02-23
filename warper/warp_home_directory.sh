@@ -2,7 +2,14 @@
 
 SYNTAX="Syntax : $0 archive_name src_directory path_in_home_directory [system dependencies]"
 
-DIRNAME=`dirname $0`
+START_DIR=`pwd`
+
+cd `dirname $0`
+DIRNAME=`pwd`
+BUILDER_SCRIPT=$DIRNAME/wrap_builder.sh
+CHECK_DEPENDENCIES=$DIRNAME/../common/check_dependencies.sh
+
+cd $START_DIR
 
 ARCHIVE_NAME=$1
 if [ "$ARCHIVE_NAME" = "" ]; then
@@ -28,7 +35,6 @@ fi
 
 shift
 SYS_DEPENDENCIES=$*
-
 
 echo "Creating WARP archive for home directory"
 echo "Archive name : $ARCHIVE_NAME"
@@ -57,7 +63,7 @@ STOP_SUBSCRIPT
 #cat $TMPDIR/install
 chmod +x $TMPDIR/install
 
-cp $DIRNAME/check_dependencies.sh $TMPDIR
+cp $CHECK_DEPENDENCIES $TMPDIR
 
 $DIRNAME/warp_builder.sh $ARCHIVE_NAME $TMPDIR
 

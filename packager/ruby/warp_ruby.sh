@@ -2,10 +2,16 @@
 
 SYNTAX="Syntax : $0 target_directory ruby_version_from_rbenv"
 
-DIRNAME=`dirname $0`
+
+START_DIR=`pwd`
+
+cd `dirname $0`
+DIRNAME=`pwd`
+WARP_HOME_SCRIPT=$DIRNAME/../../warper/warp_home_directory.sh
+
+cd $START_DIR
 
 TARGET_DIRECTORY=$1
-
 
 if [ "$TARGET_DIRECTORY" = "" ]; then
   echo $SYNTAX
@@ -17,7 +23,9 @@ if [ ! -d $TARGET_DIRECTORY ]; then
   exit 1
 fi
 
-RUBY_VERSION=$2
+shift
+
+RUBY_VERSION=$1
 
 if [ "$RUBY_VERSION" = "" ]; then
   echo $SYNTAX
@@ -33,9 +41,9 @@ fi
 
 shift
 
-cd  $TARGET_DIRECTORY
+TARGET_NAME=`$DIRNAME/../../common/ruby/generate_ruby.sh $RUBY_VERSION`
 
-TARGET_NAME="ruby_`$DIRNAME/get_arch.sh`_$RUBY_VERSION"
+cd  $TARGET_DIRECTORY
 
 if [ -f ${TARGET_NAME}.warp ]; then
   echo "Already exist $TARGET_NAME, not repackaging"
@@ -45,4 +53,4 @@ fi
 echo "Package ruby version from rbenv : $RUBY_VERSION"
 echo "Using system dependencies : $*"
 
-$DIRNAME/../warper/warp_home_directory.sh $TARGET_NAME $FROM .rbenv/versions/$RUBY_VERSION $*
+$WARP_HOME_SCRIPT $TARGET_NAME $FROM .rbenv/versions/$RUBY_VERSION $*
