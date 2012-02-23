@@ -60,6 +60,11 @@ You can use WARP to bootstrap environments, see below.
 
 ## Installing warp
 
+System package required for WARP :
+
+* `curl`
+* `git-core`
+
 To install WARP :
 
     cd $HOME
@@ -75,11 +80,22 @@ If rbenv is only used through capistrano, it's not needed.
 
 ## Ruby
 
-To package a ruby version, use the following command
+### Ruby version
 
-    $HOME/.warp/packager/ruby/warp_ruby.sh <target_dir> <ruby_version>
+To package a ruby version, use the following command :
+
+    $HOME/.warp/packager/ruby/warp_ruby.sh <target_dir> <ruby_version> [<system required packages>] 
 
 Where
 
 * `<target_dir>` is the target directory where WARP will put the WARP file. This directory should be exposed by a web server.
 * `<ruby_version>` is the rbenv ruby version to package. You can list available ruby version in rbenv by typing `rbenv versions`. You can install a new vesion by typing `rbenv install <version>`.
+* `<system required packages>` is an optionnal list of system required packages. WARP will not install them for you, but will fail to deploy this package if they are not present on the target system. For example, you can add on command line `libopenssl` to ensure that openssl is installed on the target system.
+
+Please note the packaged ruby version :
+
+* will contain gems installed with this ruby version
+* will NOT contain gemsets installed with this ruby version, expect if you specify `PACKAGE_GEMSETS=1` on your command line
+* will be specific to your linux version, and architecture.
+
+For me, the warp file is : `ruby_lucid_x86_64_ree-1.8.7-2012.02.warp`
