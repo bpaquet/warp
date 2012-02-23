@@ -39,10 +39,10 @@ if [ "$CURRENT_TAG" = "" ]; then
   git checkout $RBENV_RUBY_BUILD_TAG
 fi
 
+cd ..
 if [ ! -d rbenv-gemset ]; then
   git clone git://github.com/jamis/rbenv-gemset.git
 fi
-cd ..
 cd rbenv-gemset
 CURRENT_TAG=`git log --decorate -1 | grep $RBENV_GEMSET_TAG || true`
 if [ "$CURRENT_TAG" = "" ]; then
