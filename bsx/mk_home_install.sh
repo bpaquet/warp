@@ -57,11 +57,11 @@ fi
 echo "Moving data to \${HOME}/$PATH_IN_HOME_DIRECTORY"
 mkdir -pv \${HOME}/$PATH_IN_HOME_DIRECTORY
 rm -rf \${HOME}/$PATH_IN_HOME_DIRECTORY
-mv data/ \${HOME}/$PATH_IN_HOME_DIRECTORY/
+mv data \${HOME}/$PATH_IN_HOME_DIRECTORY
 
 STOP_SUBSCRIPT
 
-cat $TMPDIR/install
+#cat $TMPDIR/install
 chmod +x $TMPDIR/install
 
 $DIRNAME/bsx_builder.sh $ARCHIVE_NAME $TMPDIR

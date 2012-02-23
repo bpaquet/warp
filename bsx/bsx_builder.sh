@@ -29,7 +29,7 @@ BSX=$START_DIR/$NAME.bsx
 
 cd $DIRECTORY
 
-tar cf $ARCHIVE ./*
+tar czf $ARCHIVE ./*
 
 cat $DECOMP_SCRIPT $ARCHIVE > $BSX
 rm $ARCHIVE
