@@ -1,3 +1,3 @@
 #!/bin/sh -e
 
-echo "ruby_`arch`_$1"
+echo "ruby_`lsb_release -cs`_`arch`_$1"

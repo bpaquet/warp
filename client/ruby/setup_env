@@ -1,8 +1,8 @@
 if [ -f "$0" ]; then
-  `dirname $0`/setup_ruby.sh
+  `dirname $0`/setup_ruby.sh || exit 1
 fi
 if [ -f "$BASH_SOURCE" ]; then
-  `dirname $BASH_SOURCE`/setup_ruby.sh
+  `dirname $BASH_SOURCE`/setup_ruby.sh || exit 1
 fi
 export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
+eval "$(rbenv init -)" || exit 1

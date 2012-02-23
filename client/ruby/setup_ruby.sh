@@ -2,9 +2,7 @@
 
 DIRNAME=`dirname $0`
 
-if [ ! -d $HOME/.rbenv ]; then
-  $DIRNAME/../../common/ruby/setup_rbenv.sh
-fi
+$DIRNAME/../../common/ruby/setup_rbenv.sh
 
 if [ ! -f .rbenv-version ]; then
   echo "No rbenv-version file"
@@ -25,6 +23,16 @@ FILENAME=`$DIRNAME/../../common/ruby/generate_ruby.sh $RUBY_VERSION`
 
 TARGET=/tmp/$FILENAME.warp
 
-curl -s $WARP_SRC/$FILENAME.warp > $TARGET
+rm -f $TARGET
+set +e
+curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null
+RESULT=$?
+set -e
+
+if [ "$RESULT" != "0" ]; then
+  echo "Unable to download file $WARP_SRC/$FILENAME.warp"
+  exit 1
+fi
+
 sh $TARGET
 rm $TARGET
