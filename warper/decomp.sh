@@ -4,7 +4,7 @@
 TMPDIR=`mktemp -d /tmp/selfextract.XXXXXX`
 
 echo ""
-echo "This is a self extracting installer"
+echo "This is a WARP self extracting installer"
 echo "Using temp directory $TMPDIR"
 echo ""
 

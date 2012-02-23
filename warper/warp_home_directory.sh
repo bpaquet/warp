@@ -1,35 +1,42 @@
 #!/bin/sh -e
 
-DIRNAME=`dirname $0`
-ARCHIVE_NAME=$1
-shift
-DIRECTORY=$1
-shift
-PATH_IN_HOME_DIRECTORY=$1
-shift
-SYS_DEPENDENCIES=$*
+SYNTAX="Syntax : $0 archive_name src_directory path_in_home_directory [system dependencies]"
 
-SYNTAX="$0 archive_name src_directory path_in_home_directory [system dependencies]"
+DIRNAME=`dirname $0`
+
+ARCHIVE_NAME=$1
 if [ "$ARCHIVE_NAME" = "" ]; then
   echo $SYNTAX
   exit 1
 fi
+
+shift
+
+DIRECTORY=$1
 if [ ! -d $DIRECTORY ]; then 
   echo $SYNTAX
   exit 1
 fi
+
+shift
+
+PATH_IN_HOME_DIRECTORY=$1
 if [ "$PATH_IN_HOME_DIRECTORY" = "" ]; then
   echo $SYNTAX
   exit 1
 fi
 
-echo "Creating self installer in home directory"
+shift
+SYS_DEPENDENCIES=$*
+
+
+echo "Creating WARP archive for home directory"
 echo "Archive name : $ARCHIVE_NAME"
 echo "From : $DIRECTORY"
 echo "Target path in home directory : $PATH_IN_HOME_DIRECTORY"
 echo "System dependencies : $SYS_DEPENDENCIES"
 
-TMPDIR=`mktemp -d /tmp/selfextract.XXXXXX`
+TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
 
 mkdir -p $TMPDIR
 cp -r $DIRECTORY $TMPDIR/data
@@ -37,22 +44,7 @@ cp -r $DIRECTORY $TMPDIR/data
 cat > $TMPDIR/install <<STOP_SUBSCRIPT
 #!/bin/sh -e
 
-SYS_DEPENDENCIES="$SYS_DEPENDENCIES"
-
-TO_BE_INSTALLED=""
-
-for i in \$SYS_DEPENDENCIES; do
-  echo "Checking system dependency \$i"
-  RES=\$(dpkg -l | cut -d' ' -f 3 | grep \$i || true)
-  if [ "\$RES" = "" ]; then
-    TO_BE_INSTALLED="\$TO_BE_INSTALLED \$i"
-  fi
-done
-
-if [ "\$TO_BE_INSTALLED" != "" ]; then
-  echo "Failed : Please run : sudo aptitude install\$TO_BE_INSTALLED"
-  exit 1
-fi
+./check_dependencies.sh $SYS_DEPENDENCIES
 
 echo "Extracting data to \${HOME}/$PATH_IN_HOME_DIRECTORY"
 mkdir -p \${HOME}/$PATH_IN_HOME_DIRECTORY
@@ -65,6 +57,8 @@ STOP_SUBSCRIPT
 #cat $TMPDIR/install
 chmod +x $TMPDIR/install
 
-$DIRNAME/bsx_builder.sh $ARCHIVE_NAME $TMPDIR
+cp $DIRNAME/check_dependencies.sh $TMPDIR
+
+$DIRNAME/warp_builder.sh $ARCHIVE_NAME $TMPDIR
 
 rm -rf $TMPDIR

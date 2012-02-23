@@ -8,32 +8,32 @@ DECOMP_SCRIPT=$DIRNAME/decomp.sh
 
 cd $START_DIR
 
+SYNTAX="Syntax : $0 archive_name directory"
+
 NAME=$1
-DIRECTORY=$2
-
-SYNTAX="$0 archive_name directory"
-
 if [ "$NAME" = "" ]; then
   echo $SYNTAX
   exit 1
 fi
+
+DIRECTORY=$2
 if [ ! -d $DIRECTORY ]; then
   echo $SYNTAX
   exit 1
 fi
 
-echo "Creating self extracting archive $NAME from $DIRECTORY"
+echo "Creating WARP archive $NAME from $DIRECTORY"
 
 ARCHIVE=$START_DIR/$NAME.tar.gz
-BSX=$START_DIR/$NAME.bsx
+WARP=$START_DIR/$NAME.warp
 
 cd $DIRECTORY
 
 tar czf $ARCHIVE ./*
 
-cat $DECOMP_SCRIPT $ARCHIVE > $BSX
+cat $DECOMP_SCRIPT $ARCHIVE > $WARP
 rm $ARCHIVE
 
-chmod +x $BSX
+chmod +x $WARP
 
-echo $NAME.bsx created.
+echo `basename $WARP` created.
