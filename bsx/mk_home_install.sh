@@ -54,10 +54,11 @@ if [ "\$TO_BE_INSTALLED" != "" ]; then
   exit 1
 fi
 
-echo "Moving data to \${HOME}/$PATH_IN_HOME_DIRECTORY"
-mkdir -pv \${HOME}/$PATH_IN_HOME_DIRECTORY
+echo "Extracting data to \${HOME}/$PATH_IN_HOME_DIRECTORY"
+mkdir -p \${HOME}/$PATH_IN_HOME_DIRECTORY
 rm -rf \${HOME}/$PATH_IN_HOME_DIRECTORY
 mv data \${HOME}/$PATH_IN_HOME_DIRECTORY
+echo "Done."
 
 STOP_SUBSCRIPT
 
