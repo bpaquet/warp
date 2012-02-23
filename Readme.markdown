@@ -36,6 +36,8 @@ In Ruby world, WARP is designed to work in collaboration with
 
 ## Architecture
 
+WARP always run in user mode, no root or sudo is needed.
+
 There is two roles in WARP :
 
 ### Packager
@@ -49,3 +51,27 @@ in a directory exposed by an http server
 Every servers running your app are clients. While deploying, you have to call WARP to install binary packages.
 Binary packages are downloaded from continuous integration server.
 GCC is not required on theses servers, not recompilation is done while deploying.
+
+
+### Warp file
+
+A .warp file is a binary package. It's a self extracting archive, constructed with tar, gzip and some customs scripts.
+You can use WARP to bootstrap environments, see below.
+
+## Installing warp
+
+To install WARP :
+
+    cd $HOME
+    git clone git@github.com:bpaquet/warp.git .warp
+
+To install [rbenv], WARP provide a script 
+
+    $HOME/.warp/common/ruby/setup_rbenv.sh
+    
+Do not forget to add the two lines in your shell startup file, if you plan to use rbenv from in a interactive shell.
+If rbenv is only used through capistrano, it's not needed
+
+# Packaging
+
+## Rub
