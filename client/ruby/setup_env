@@ -1,8 +1,12 @@
 if [ -f "$0" ]; then
-  `dirname $0`/setup_ruby.sh || exit 1
+  DIRNAME=`dirname $0`
 fi
 if [ -f "$BASH_SOURCE" ]; then
-  `dirname $BASH_SOURCE`/setup_ruby.sh || exit 1
+  DIRNAME=`dirname $BASH_SOURCE`
+fi
+$DIRNAME/setup_ruby.sh
+if [ -f .rbenv-gemsets ]; then
+  $DIRNAME/setup_gemset.sh
 fi
 export PATH=$HOME/.rbenv/bin:$PATH
 eval "$(rbenv init -)" || exit 1

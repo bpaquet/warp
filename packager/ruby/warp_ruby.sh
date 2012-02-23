@@ -19,7 +19,7 @@ if [ "$TARGET_DIRECTORY" = "" ]; then
 fi
 
 if [ ! -d $TARGET_DIRECTORY ]; then
-  echo "$TARGET_DIRECTORY does not exist : $RUBY_VERSION"
+  echo "$TARGET_DIRECTORY does not exist"
   exit 1
 fi
 
@@ -37,6 +37,14 @@ FROM="$HOME/.rbenv/versions/$RUBY_VERSION"
 if [ ! -d $FROM ]; then
   echo "Ruby version does not exist : $RUBY_VERSION"
   exit 1
+fi
+
+if [ -d $FROM/gemsets ]; then
+  if [ "$PACKAGE_GEMSET" != "1" ]; then
+    echo "Do not package ruby version containing gemset !"
+    echo "If you are sure to do that, please set env variable to PACKAGE_GEMSET=1"
+    exit 1
+  fi
 fi
 
 shift
