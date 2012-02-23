@@ -65,13 +65,21 @@ To install WARP :
     cd $HOME
     git clone git@github.com:bpaquet/warp.git .warp
 
-To install [rbenv], WARP provide a script 
+If you want to use rbenv from in a interactive shell (on a WARP packager for example), type the following command and add the two lines in your shell startup file.
+If rbenv is only used through capistrano, it's not needed.
 
     $HOME/.warp/common/ruby/setup_rbenv.sh
     
-Do not forget to add the two lines in your shell startup file, if you plan to use rbenv from in a interactive shell.
-If rbenv is only used through capistrano, it's not needed
 
 # Packaging
 
-## Rub
+## Ruby
+
+To package a ruby version, use the following command
+
+    $HOME/.warp/packager/ruby/warp_ruby.sh <target_dir> <ruby_version>
+
+Where
+
+* `<target_dir>` is the target directory where WARP will put the WARP file. This directory should be exposed by a web server.
+* `<ruby_version>` is the rbenv ruby version to package. You can list available ruby version in rbenv by typing `rbenv versions`. You can install a new vesion by typing `rbenv install <version>`.
