@@ -8,13 +8,11 @@ if [ -f .warped ]; then
 fi
 
 if [ ! -f Gemfile.lock ]; then
-  echo "No Gemfile.lock"
-  exit 1
+  exit 0
 fi
 
 if [ ! -f .rbenv-version ]; then
-  echo "No .rbenv-version file"
-  exit 1
+  exit 0
 fi
 RUBY_VERSION=`cat .rbenv-version`
 

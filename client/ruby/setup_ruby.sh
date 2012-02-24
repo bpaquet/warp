@@ -5,8 +5,7 @@ DIRNAME=`dirname $0`
 $DIRNAME/../../common/ruby/setup_rbenv.sh
 
 if [ ! -f .rbenv-version ]; then
-  echo "No rbenv-version file"
-  exit 1
+  exit 0
 fi
 
 RUBY_VERSION=`cat .rbenv-version`

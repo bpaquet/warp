@@ -19,7 +19,6 @@ if [ "$CURRENT_TAG" = "" ]; then
   echo "Updating rbenv"
   git checkout master
   git pull
-  git fetch --tags
   git checkout $RBENV_TAG
 fi
 
@@ -35,7 +34,6 @@ if [ "$CURRENT_TAG" = "" ]; then
   echo "Updating rbenv ruby build"
   git checkout master
   git pull
-  git fetch --tags
   git checkout $RBENV_RUBY_BUILD_TAG
 fi
 
@@ -49,13 +47,29 @@ if [ "$CURRENT_TAG" = "" ]; then
   echo "Updating rbenv gemset"
   git checkout master
   git pull
-  git fetch --tags
   git checkout $RBENV_GEMSET_TAG
 fi
 
 if [ "$RBENV_HAS_BEEN_INSTALLED" = "1" ]; then
+  for i in $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc; do
+    if [ -f $i ]; then
+      FOUND=`cat $i | grep 'rbenv init' || true`
+      if [ "$FOUND" = "" ]; then
+        echo "Modifying shell file : $i"
+        echo "" >> $i
+        echo "# RBENV CONFIG" >> $i
+        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $i
+        echo 'eval "$(rbenv init -)"' >> $i
+      else
+        echo "Startup files already modified"
+      fi
+      RBENV_HAS_BEEN_INSTALLED=0
+    fi
+  done
+fi
+if [ "$RBENV_HAS_BEEN_INSTALLED" = "1" ]; then
   echo "*****************************"
-  echo "rbenv has been installed"
+  echo "rbenv has been installed, but we do not found your shell startup scripts"
   echo "To activate it in your shell, please add following lines to your startup script"
   echo ""
   echo 'export PATH="$HOME/.rbenv/bin:$PATH"'

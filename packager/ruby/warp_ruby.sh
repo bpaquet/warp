@@ -19,7 +19,7 @@ if [ "$TARGET_DIRECTORY" = "" ]; then
 fi
 
 if [ ! -d $TARGET_DIRECTORY ]; then
-  echo "$TARGET_DIRECTORY does not exist"
+  echo "Target directory $TARGET_DIRECTORY does not exist"
   exit 1
 fi
 

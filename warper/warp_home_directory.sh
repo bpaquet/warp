@@ -6,8 +6,7 @@ START_DIR=`pwd`
 
 cd `dirname $0`
 DIRNAME=`pwd`
-BUILDER_SCRIPT=$DIRNAME/wrap_builder.sh
-CHECK_DEPENDENCIES=$DIRNAME/../common/check_dependencies.sh
+WARP_HOME=$DIRNAME/..
 
 cd $START_DIR
 
@@ -42,15 +41,32 @@ echo "From : $DIRECTORY"
 echo "Target path in home directory : $PATH_IN_HOME_DIRECTORY"
 echo "System dependencies : $SYS_DEPENDENCIES"
 
+if [ "$INSTALL_RBENV" = "1" ]; then
+  echo "Rbenv will be automatically installed whith this package"
+fi
+
 TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
 
 mkdir -p $TMPDIR
 cp -r $DIRECTORY $TMPDIR/data
 
+EXTENDED_COMMAND_BEFORE=""
+EXTENDED_COMMAND_AFTER=""
+
+if [ "$INSTALL_RBENV" = "1" ]; then
+  mkdir $TMPDIR/ruby
+  cp $WARP_HOME/common/ruby/setup_rbenv.sh $TMPDIR/ruby
+  cp $WARP_HOME/common/ruby/set_global_ruby_version.sh $TMPDIR/ruby
+  EXTENDED_COMMAND_BEFORE=./ruby/setup_rbenv.sh
+  EXTENDED_COMMAND_AFTER=./ruby/set_global_ruby_version.sh
+fi
+
 cat > $TMPDIR/install <<STOP_SUBSCRIPT
 #!/bin/sh -e
 
 ./check_dependencies.sh $SYS_DEPENDENCIES
+
+$EXTENDED_COMMAND_BEFORE
 
 echo "Extracting data to \${HOME}/$PATH_IN_HOME_DIRECTORY"
 mkdir -p \${HOME}/$PATH_IN_HOME_DIRECTORY
@@ -58,12 +74,13 @@ rm -rf \${HOME}/$PATH_IN_HOME_DIRECTORY
 mv data \${HOME}/$PATH_IN_HOME_DIRECTORY
 echo "Done."
 
+$EXTENDED_COMMAND_AFTER
+
 STOP_SUBSCRIPT
 
-#cat $TMPDIR/install
 chmod +x $TMPDIR/install
 
-cp $CHECK_DEPENDENCIES $TMPDIR
+cp $WARP_HOME/common/check_dependencies.sh $TMPDIR
 
 $DIRNAME/warp_builder.sh $ARCHIVE_NAME $TMPDIR
 
