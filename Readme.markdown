@@ -1,5 +1,7 @@
 # WARP, the Wonderful Application Runtime Packager
 
+Click [here](https://github.com/bpaquet/warp/wiki/Summary) for full documentation.
+
 You are in love with ruby, but deploying in production in a hell :
 
 * have to install GCC and dependencies in -dev to compile gem
@@ -12,9 +14,15 @@ You are in love with [NodeJS], and you have same problems :
 * wait for NodeJS compilation
 * wait for module download and compilation
 
-## WARP is for you !
+Another feature offered by WARP : you want to use a tools like Chef or Redmine on a server, but
 
-How it's work :
+* you does not want to install GCC to compile Ruby and gems
+* you does not want a system ruby, and system gems as root
+* you want uninstall chef and all related chef with one command line : rm
+
+WARP allow you to package an self sufficient package for Chef or Redmine.
+
+# How it's work :
 
 * use Warp on your Continuous Integration Server to create binary packages, containing ruby binary version, gemsets, node binary version, nodes modules ...
 * expose these packages in a HTTP server
@@ -27,76 +35,6 @@ In Ruby world, WARP is designed to work in collaboration with
 * [rbenv]
 * [bundler]
 * [capistrano]
-
-## Architecture
-
-WARP always run in user mode, no root account or sudo is needed.
-
-There is two roles in WARP :
-
-### Packager
-
-In standard deployment, it's the continuous integration server. This server has GCC and all compilation tools installed.
-This server is installed with the same linux distribution than production server, with same cpu architecture.
-
-After running tests, the continuous integration engine will call WARP to build needed binary packages, and depose them
-in a directory exposed by an http server.
-
-### Client
-
-Every servers running your app are WARP clients. While deploying, you have to call WARP to install binary packages.
-
-Binary packages are downloaded from continuous integration server.
-
-GCC is not required on theses servers, not recompilation is done while deploying.
-
-### Warp file
-
-A .warp file is a binary package. It's a self extracting archive, constructed with tar, gzip and some customs scripts.
-You can use WARP to bootstrap environments, see below.
-
-## Installing warp
-
-System package required for WARP :
-
-* `curl`
-* `git-core`
-
-To install WARP :
-
-    cd $HOME
-    git clone git@github.com:bpaquet/warp.git .warp
-
-If you want to use rbenv from in a interactive shell (on a WARP packager for example), type the following command and add the two lines in your shell startup file.
-If rbenv is only used through capistrano, it's not needed.
-
-    $HOME/.warp/common/ruby/setup_rbenv.sh
-    
-
-# Packaging
-
-## Ruby
-
-### Ruby version
-
-To package a ruby version, use the following command :
-
-    $HOME/.warp/packager/ruby/warp_ruby.sh <target_dir> <ruby_version> [<system required packages>] 
-
-Where
-
-* `<target_dir>` is the target directory where WARP will put the .warp file. This directory should be exposed by a web server.
-* `<ruby_version>` is the rbenv ruby version to package. You can list available ruby version in rbenv by typing `rbenv versions`. You can install a new vesion by typing `rbenv install <version>`.
-* `<system required packages>` is an optionnal list of system required packages. WARP will not install them for you, but will fail to deploy this package if they are not present on the target system. For example, you can add on command line `libopenssl` to ensure that openssl is installed on the target system.
-
-Please note that the packaged ruby version :
-
-* will contain gems installed with this ruby version
-* will NOT contain gemsets installed with this ruby version, unless you specify `PACKAGE_GEMSETS=1` on your command line
-* will be specific to your linux version, and architecture.
-
-For me, the warp file is : `ruby_lucid_x86_64_ree-1.8.7-2012.02.warp`
-
 
 [RVM]: https://rvm.beginrescueend.com/
 [rbenv]: https://github.com/sstephenson/rbenv
