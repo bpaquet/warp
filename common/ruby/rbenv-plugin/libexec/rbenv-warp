@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -e
+
+RBENV_WARP_VERSION="0.0.1"
+
+# Provide rbenv completions
+if [ "$1" = "--complete" ]; then
+  echo "package-ruby"
+  echo "package-gemset"
+  echo "version"
+  exit
+fi
+
+if [ "$1" = "version" ] || [ "$1" = "--version" ]; then
+  echo "rbenv-warp ${RBENV_WARP_VERSION}"
+  exit
+fi
+
+resolve_link() {
+  $(type -p greadlink readlink | head -1) $1
+}
+
+abs_dirname() {
+  local cwd="$(pwd)"
+  local path="$1"
+
+  while [ -n "$path" ]; do
+    cd "${path%/*}"
+    local name="${path##*/}"
+    path="$(resolve_link "$name" || true)"
+  done
+
+  pwd
+  cd "$cwd"
+}
+
+bin_path="$(abs_dirname "$0")"
+export PATH="${bin_path}:$PATH"
+
+command="$1"
+command_path="$(command -v "rbenv-warp-$command" || true)"
+
+if [ -z "$command_path" ]; then
+  { echo "version ${RBENV_WARP_VERSION}"
+    echo "${0##*/} [command] [options]"
+    echo
+    echo "possible commands are:"
+    echo "  package-ruby [-install_rbenv] [sys dependencies]"
+    echo "  package-gemset [sys dependencies]"
+    echo "  version"
+  } >&2
+  exit 1
+fi
+
+shift
+exec "$command_path" "$@"

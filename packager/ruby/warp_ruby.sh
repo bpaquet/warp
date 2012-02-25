@@ -10,15 +10,15 @@ load_lib ruby
 
 check_export_directory
 
-if [ "$1" = "-install_rbenv" ]; then
-  INSTALL_RBENV=1
-  shift
-fi
-
 RUBY_VERSION=$1
 check_not_empty $RUBY_VERSION
 
 shift
+
+if [ "$1" = "-install_rbenv" ]; then
+  INSTALL_RBENV=1
+  shift
+fi
 
 SYS_DEPENDENCIES=$*
 

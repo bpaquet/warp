@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+if [ "$WARP_HOME" = "" ]; then
+  WARP_HOME=$HOME/.warp
+fi
+
+unset RBENV_DIR
+unset RBENV_HOOK_PATH
+unset RBENV_ROOT
+
+exec $WARP_HOME/packager/ruby/warp_gemset.sh $*

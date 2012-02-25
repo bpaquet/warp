@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+if [ "$WARP_HOME" = "" ]; then
+  WARP_HOME=$HOME/.warp
+fi
+
+RUBY_VERSION=$(rbenv-version-name)
+
+unset RBENV_DIR
+unset RBENV_HOOK_PATH
+unset RBENV_ROOT
+
+exec $WARP_HOME/packager/ruby/warp_ruby.sh $RUBY_VERSION $*
