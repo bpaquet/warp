@@ -1,87 +1,93 @@
+#!/bin/sh
+
+DIRNAME=`dirname $0`
+RELATIVE_WARP_HOME=../../
+. $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
+
+load_lib ruby
+
+check_export_directory
+
+check_existent Gemfile
+check_existent Gemfile.lock
+check_existent .rbenv-version
+check_existent .rbenv-gemsets
+
+load_ruby_config
+
+TARGET_NAME=$(generate_gemset)
+
+TARGET_NAME="${TARGET_NAME}.warp"
+
+check_not_existent $WARP_EXPORT_DIR/$TARGET_NAME
+
+SYS_DEPENDENCIES=$*
+
+echo "Packaging gemset $LOCAL_GEMSET to $TARGET_NAME"
+echo "Sys dependencies : $SYS_DEPENDENCIES"
+
+ORIG_GEMSET="$RBENV_DIR/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET"
+OLD_ORIG_GEMSET="${ORIG_GEMSET}.old"
+
+if [ -d "$OLD_ORIG_GEMSET" ]; then
+  run rm -rf $OLD_ORIG_GEMSET
+fi
+
+if [ -d "$ORIG_GEMSET" ]; then
+  run mv $ORIG_GEMSET $OLD_ORIG_GEMSET
+fi
+
+TMPDIR=$(tmpdir)
+run cp .rbenv-version .rbenv-gemsets Gemfile $TMPDIR
+
+cd $TMPDIR
+check_result
+
+$RBENV_DIR/bin/rbenv rehash || true
+run gem install bundler
+$RBENV_DIR/bin/rbenv rehash || true
+run bundle $LOCAL_BUNDLE_OPTIONS
+
+TMPDIR2=$(tmpdir)
+
+run mv $ORIG_GEMSET $TMPDIR2
+if [ -d .bundle ]; then
+  run mv .bundle $TMPDIR2/$LOCAL_GEMSET
+fi
+
+run rm -rf $TMPDIR
+
+run cp -r $WARP_HOME/common $TMPDIR2
+
+cd $TMPDIR2
+check_result
+
+if [ -d "$OLD_ORIG_GEMSET" ]; then
+  run mv $OLD_ORIG_GEMSET $ORIG_GEMSET
+fi
+
+cat > $TMPDIR2/install <<STOP_SUBSCRIPT
 #!/bin/sh -e
 
-SYNTAX="Syntax : $0 target_directory"
+common/check_dependencies.sh $SYS_DEPENDENCIES
 
-START_DIR=`pwd`
+echo "Extracting gemset $LOCAL_GEMSET to \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH"
+mkdir -p \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
+rm -rf \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
+mv $LOCAL_GEMSET \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 
-cd `dirname $0`
-DIRNAME=`pwd`
-WARP_HOME_SCRIPT=$DIRNAME/../../warper/warp_home_directory.sh
-GENERATE_GEMSET=$DIRNAME/../../common/ruby/generate_gemset.sh
+$RBENV_DIR/bin/rbenv rehash || true
+common/ruby/adjust_shebangs.sh \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 
-cd $START_DIR
+echo "Done."
 
-TARGET_DIRECTORY=$1
+STOP_SUBSCRIPT
 
-if [ "$TARGET_DIRECTORY" = "" ]; then
-  echo $SYNTAX
-  exit 1
-fi
+run chmod +x $TMPDIR2/install
 
-if [ ! -d $TARGET_DIRECTORY ]; then
-  echo "$TARGET_DIRECTORY does not exist"
-  exit 1
-fi
+cd $WARP_EXPORT_DIR
+check_result
 
-if [ ! -f Gemfile ]; then
-  echo "No Gemfile"
-  exit 1
-fi
+run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR2
 
-if [ ! -f Gemfile.lock ]; then
-  echo "No Gemfile.lock"
-  exit 1
-fi
-
-if [ ! -f .rbenv-version ]; then
-  echo "No .rbenv-version file"
-  exit 1
-fi
-RUBY_VERSION=`cat .rbenv-version`
-
-if [ ! -f .rbenv-gemsets ]; then
-  echo "No .rbenv-gemsets file"
-  exit 1
-fi
-GEMSET=`cat .rbenv-gemsets`
-
-echo "Warping gemset $GEMSET for ruby $RUBY_VERSION"
-
-ORIG_GEMSET="$HOME/.rbenv/versions/$RUBY_VERSION/gemsets/$GEMSET"
-
-if [ ! -d $ORIG_GEMSET ]; then
-  echo "Missing gemset"
-  exit 1
-fi
-
-shift
-
-mv $ORIG_GEMSET $ORIG_GEMSET.old
-
-START_DIR=`pwd`
-
-TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
-cp .rbenv-version .rbenv-gemsets Gemfile $TMPDIR
-cd $TMPDIR
-
-gem install bundler
-bundle $BUNDLE_OPTIONS
-
-HASH=`$GENERATE_GEMSET`
-
-TMPDIR2=`mktemp -d /tmp/warp.XXXXXX`
-
-mv $ORIG_GEMSET $TMPDIR2
-if [ -d .bundle ]; then
-  mv .bundle $TMPDIR2/$GEMSET
-fi
-
-rm -rf $TMPDIR
-
-mv $ORIG_GEMSET.old $ORIG_GEMSET
-
-cd $TARGET_DIRECTORY
-
-$WARP_HOME_SCRIPT "gemset_${RUBY_VERSION}_${HASH}" $TMPDIR2/$GEMSET .rbenv/versions/$RUBY_VERSION/gemsets/$HASH $*
-
-rm -rf $TMPDIR2
+run rm -rf $TMPDIR2

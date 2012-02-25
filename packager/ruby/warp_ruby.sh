@@ -1,47 +1,47 @@
-#!/bin/sh -e
+#!/bin/sh
 
-SYNTAX="Syntax : $0 target_directory ruby_version_from_rbenv"
+SYNTAX="Syntax : $0 ruby_version_from_rbenv"
 
+DIRNAME=`dirname $0`
+RELATIVE_WARP_HOME=../../
+. $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
-START_DIR=`pwd`
+load_lib ruby
 
-cd `dirname $0`
-DIRNAME=`pwd`
-WARP_HOME_SCRIPT=$DIRNAME/../../warper/warp_home_directory.sh
+check_export_directory
 
-cd $START_DIR
-
-TARGET_DIRECTORY=$1
-
-if [ "$TARGET_DIRECTORY" = "" ]; then
-  echo $SYNTAX
-  exit 1
+if [ "$1" = "-install_rbenv" ]; then
+  INSTALL_RBENV=1
+  shift
 fi
 
-if [ ! -d $TARGET_DIRECTORY ]; then
-  echo "Target directory $TARGET_DIRECTORY does not exist"
-  exit 1
-fi
+RUBY_VERSION=$1
+check_not_empty $RUBY_VERSION
 
 shift
 
-RUBY_VERSION=$1
+SYS_DEPENDENCIES=$*
 
-if [ "$RUBY_VERSION" = "" ]; then
-  echo $SYNTAX
-  exit 1
+FROM="$RBENV_DIR/versions/$RUBY_VERSION"
+check_directory_exists $FROM
+
+TARGET_NAME=$(generate_ruby_version $RUBY_VERSION)
+
+if [ "$INSTALL_RBENV" = "1" ]; then
+  TARGET_NAME="${TARGET_NAME}_rbenv"
 fi
 
-FROM="$HOME/.rbenv/versions/$RUBY_VERSION"
+TARGET_NAME="${TARGET_NAME}.warp"
 
-if [ ! -d $FROM ]; then
-  echo "Ruby version does not exist : $RUBY_VERSION"
-  exit 1
-fi
+check_not_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
-TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
+echo "Package ruby version from rbenv : $RUBY_VERSION"
+echo "Using system dependencies : $SYS_DEPENDENCIES"
+echo "Installing rbenv : $INSTALL_RBENV"
 
-cp -r $FROM $TMPDIR
+TMPDIR=$(tmpdir)
+
+run cp -r $FROM $TMPDIR
 
 FROM=$TMPDIR/$RUBY_VERSION
 
@@ -51,24 +51,41 @@ if [ -d $FROM/gemsets ]; then
     echo "You have gemsets installed in this ruby. This package will not contains this gemsets."
     echo "If you want to include this gemsets into the package, please set env variable to PACKAGE_GEMSETS=1"
     echo "************************************"
-    rm -rf $FROM/gemsets
+    run rm -rf $FROM/gemsets
   fi
 fi
 
-shift
+run cp -r $WARP_HOME/common $TMPDIR
 
-TARGET_NAME=`$DIRNAME/../../common/ruby/generate_ruby.sh $RUBY_VERSION`
+echo "#!/bin/sh -e" > $TMPDIR/install
+echo "" >> $TMPDIR/install
+echo "common/check_dependencies.sh $SYS_DEPENDENCIES" >> $TMPDIR/install
 
-cd  $TARGET_DIRECTORY
-
-if [ -f ${TARGET_NAME}.warp ]; then
-  echo "Already exist $TARGET_NAME, not repackaging"
-  exit 0
+if [ "$INSTALL_RBENV" = "1" ]; then
+  echo "common/ruby/setup_rbenv.sh" >> $TMPDIR/install
 fi
 
-echo "Package ruby version from rbenv : $RUBY_VERSION"
-echo "Using system dependencies : $*"
+cat >> $TMPDIR/install <<STOP_SUBSCRIPT
 
-$WARP_HOME_SCRIPT $TARGET_NAME $FROM .rbenv/versions/$RUBY_VERSION $*
+echo "Extracting ruby $RUBY_VERSION to \${HOME}/.rbenv/versions/$RUBY_VERSION"
+mkdir -p \${HOME}/.rbenv/versions/$RUBY_VERSION
+rm -rf \${HOME}/.rbenv/versions/$RUBY_VERSION
+mv $RUBY_VERSION \${HOME}/.rbenv/versions/$RUBY_VERSION
 
-rm -rf $FROM
+echo "New ruby version $RUBY_VERSION installed"
+
+$RBENV_DIR/bin/rbenv rehash || true
+common/ruby/adjust_shebangs.sh \${HOME}/.rbenv/versions/$RUBY_VERSION
+
+echo "Done."
+
+STOP_SUBSCRIPT
+
+run chmod +x $TMPDIR/install
+
+cd $WARP_EXPORT_DIR
+check_result
+
+run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR
+
+rm -rf $TMPDIR

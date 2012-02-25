@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 
 SYS_DEPENDENCIES=$*
 
@@ -6,7 +6,7 @@ TO_BE_INSTALLED=""
 
 for i in $SYS_DEPENDENCIES; do
   echo "Checking system dependency : $i"
-  RES=$(dpkg -l $i | grep "^ii" || true)
+  RES=$(dpkg -l $i | grep "^ii")
   if [ "$RES" = "" ]; then
     TO_BE_INSTALLED="$TO_BE_INSTALLED $i"
   fi

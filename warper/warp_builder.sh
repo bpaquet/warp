@@ -1,39 +1,31 @@
-#!/bin/sh -e
+#!/bin/sh
 
-START_DIR=`pwd`
-
-cd `dirname $0`
-DIRNAME=`pwd`
-DECOMP_SCRIPT=$DIRNAME/decomp.sh
-
-cd $START_DIR
+DIRNAME=`dirname $0`
+RELATIVE_WARP_HOME=../
+. $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
 SYNTAX="Syntax : $0 archive_name directory"
 
 NAME=$1
-if [ "$NAME" = "" ]; then
-  echo $SYNTAX
-  exit 1
-fi
+check_not_empty $NAME
 
 DIRECTORY=$2
-if [ ! -d $DIRECTORY ]; then
-  echo $SYNTAX
-  exit 1
-fi
+check_directory_exists $DIRECTORY
 
-echo "Creating WARP archive $NAME from $DIRECTORY"
+echo "Creating WARP archive $NAME from directory $DIRECTORY"
 
 ARCHIVE=$START_DIR/$NAME.tar.gz
-WARP=$START_DIR/$NAME.warp
+WARP=$START_DIR/$NAME
 
 cd $DIRECTORY
 
-tar czf $ARCHIVE ./*
+run tar czf $ARCHIVE ./*
 
-cat $DECOMP_SCRIPT $ARCHIVE > $WARP
-rm $ARCHIVE
+cat $WARP_HOME/warper/decomp.sh $ARCHIVE > $WARP
+check_result
 
-chmod +x $WARP
+run rm $ARCHIVE
+
+run chmod +x $WARP
 
 echo `basename $WARP` created.
