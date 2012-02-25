@@ -45,6 +45,9 @@ run cp -r $FROM $TMPDIR
 
 FROM=$TMPDIR/$RUBY_VERSION
 
+echo 'puts $LOAD_PATH.join(":")' | $FROM/bin/ruby > $FROM/bin/.rubylib.orig
+check_result
+
 if [ -d $FROM/gemsets ]; then
   if [ "$PACKAGE_GEMSETS" != "1" ]; then
     echo "************************************"
@@ -74,8 +77,10 @@ mv $RUBY_VERSION \${HOME}/.rbenv/versions/$RUBY_VERSION
 
 echo "New ruby version $RUBY_VERSION installed"
 
-$RBENV_DIR/bin/rbenv rehash || true
+\${HOME}/.rbenv/bin/rbenv rehash || true
 common/ruby/adjust_shebangs.sh \${HOME}/.rbenv/versions/$RUBY_VERSION
+common/ruby/adjust_rubylib.sh \${HOME}/.rbenv/versions/$RUBY_VERSION
+common/ruby/set_global_ruby_version.sh
 
 echo "Done."
 

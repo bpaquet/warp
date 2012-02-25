@@ -24,6 +24,7 @@ check_not_existent $WARP_EXPORT_DIR/$TARGET_NAME
 SYS_DEPENDENCIES=$*
 
 echo "Packaging gemset $LOCAL_GEMSET to $TARGET_NAME"
+echo "Bundler options : $LOCAL_BUNDLE_OPTIONS"
 echo "Sys dependencies : $SYS_DEPENDENCIES"
 
 ORIG_GEMSET="$RBENV_DIR/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET"
@@ -43,10 +44,10 @@ run cp .rbenv-version .rbenv-gemsets Gemfile $TMPDIR
 cd $TMPDIR
 check_result
 
-$RBENV_DIR/bin/rbenv rehash || true
 run gem install bundler
 $RBENV_DIR/bin/rbenv rehash || true
 run bundle $LOCAL_BUNDLE_OPTIONS
+$RBENV_DIR/bin/rbenv rehash || true
 
 TMPDIR2=$(tmpdir)
 
@@ -55,12 +56,12 @@ if [ -d .bundle ]; then
   run mv .bundle $TMPDIR2/$LOCAL_GEMSET
 fi
 
+cd $TMPDIR2
+check_result
+
 run rm -rf $TMPDIR
 
 run cp -r $WARP_HOME/common $TMPDIR2
-
-cd $TMPDIR2
-check_result
 
 if [ -d "$OLD_ORIG_GEMSET" ]; then
   run mv $OLD_ORIG_GEMSET $ORIG_GEMSET
@@ -76,7 +77,7 @@ mkdir -p \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 rm -rf \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 mv $LOCAL_GEMSET \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 
-$RBENV_DIR/bin/rbenv rehash || true
+\${HOME}/.rbenv/bin/rbenv rehash || true
 common/ruby/adjust_shebangs.sh \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET_HASH
 
 echo "Done."

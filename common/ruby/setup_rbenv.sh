@@ -68,6 +68,8 @@ if [ "$CURRENT_TAG" = "" ]; then
   run git checkout $RBENV_GEMSET_TAG
 fi
 
+$WARP_HOME/common/ruby/install_warp_plugin.sh
+
 if [ "$RBENV_HAS_BEEN_INSTALLED" = "1" ]; then
   for i in $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc; do
     if [ -f $i ]; then
