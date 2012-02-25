@@ -5,6 +5,9 @@ RBENV_WARP_VERSION="0.0.1"
 
 # Provide rbenv completions
 if [ "$1" = "--complete" ]; then
+  echo "install"
+  echo "install-ruby"
+  echo "install-gemset"
   echo "package-ruby"
   echo "package-gemset"
   echo "version"
@@ -45,6 +48,9 @@ if [ -z "$command_path" ]; then
     echo "${0##*/} [command] [options]"
     echo
     echo "possible commands are:"
+    echo "install"
+    echo "  install-ruby"
+    echo "  install-gemset"
     echo "  package-ruby [-install_rbenv] [sys dependencies]"
     echo "  package-gemset [sys dependencies]"
     echo "  version"

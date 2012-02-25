@@ -74,6 +74,24 @@ load_lib() {
   . $WARP_HOME/common/$1/lib_$1.sh
 }
 
+download_and_install() {
+  FILENAME=$1
+  WARP_SRC=`cat $HOME/.warp_src`
+  TARGET=/tmp/toto.warp
+  echo "Downloading file $WARP_SRC/$FILENAME.warp"
+  curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null
+  if [ "$?" != "0" ]; then
+    echo "Unable to download file $WARP_SRC/$FILENAME.warp"
+    rm -f $TARGET
+    exit 87
+  fi
+  echo "File download successful"
+  sh $TARGET
+  check_result
+  rm $TARGET
+  check_result
+}
+
 START_DIR=`pwd`
 WARP_HOME=`cd $DIRNAME && cd $RELATIVE_WARP_HOME && pwd`
 RBENV_DIR="$HOME/.rbenv"

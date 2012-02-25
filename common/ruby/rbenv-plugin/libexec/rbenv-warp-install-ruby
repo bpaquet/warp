@@ -9,4 +9,4 @@ unset RBENV_DIR
 unset RBENV_HOOK_PATH
 unset RBENV_ROOT
 
-$WARP_HOME/packager/ruby/warp_gemset.sh $*
+$WARP_HOME/client/ruby/install_ruby.sh $*
