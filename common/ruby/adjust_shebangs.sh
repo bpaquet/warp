@@ -18,10 +18,10 @@ check_directory_exists $BIN_PATH
 
 echo "Adjusting shebangs for $RUBY_PATH"
 
-SLASH_BIN_PATH=`cd $BIN_PATH && pwd | sed -e 's/\//\\\\\//g'`
+SLASH_HOME_PATH=`cd $HOME && pwd | sed -e 's/\//\\\\\//g'`
 
 for i in `ls $BIN_PATH`; do
   if [ `file -b $BIN_PATH/$i | awk '{print $1}'` != "ELF" ]; then
-    sed -i -e "s/^#!\/.*\/\.rbenv\/versions\/.*\/bin/#!${SLASH_BIN_PATH}/" $BIN_PATH/$i
+    sed -i -e "s/^#!\/.*\/\.rbenv\/versions\//#!${SLASH_HOME_PATH}\/.rbenv\/versions\//" $BIN_PATH/$i
   fi
 done
