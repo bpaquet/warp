@@ -1,6 +1,8 @@
 #!/bin/sh
 
 
+START_DIR=`pwd`
+
 TMPDIR=`mktemp -d /tmp/warp.XXXXXX`
 
 echo ""
@@ -15,7 +17,7 @@ tail -n+$ARCHIVE $0 | tar xz -C $TMPDIR
 CDIR=`pwd`
 
 cd $TMPDIR
-./install
+./install $START_DIR
 
 cd $CDIR
 rm -rf $TMPDIR

@@ -83,6 +83,7 @@ common/ruby/adjust_shebangs.sh \${HOME}/.rbenv/versions/$LOCAL_RUBY_VERSION/gems
 echo "Done."
 
 STOP_SUBSCRIPT
+check_result
 
 run chmod +x $TMPDIR2/install
 

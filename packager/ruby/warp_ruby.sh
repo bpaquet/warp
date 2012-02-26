@@ -85,6 +85,7 @@ common/ruby/set_global_ruby_version.sh
 echo "Done."
 
 STOP_SUBSCRIPT
+check_result
 
 run chmod +x $TMPDIR/install
 

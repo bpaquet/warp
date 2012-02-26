@@ -14,6 +14,19 @@ check_directory_exists() {
   fi 
 }
 
+check_mutiple_values() {
+  check_not_empty $1
+  VALUE=$1
+  shift
+  for i in $*; do
+    if [ "$i" = "$VALUE" ]; then
+      return 0
+    fi
+  done
+  echo "Value : $VALUE not in list $*"
+  exit 16
+}
+
 check_export_directory() {
   if [ "$WARP_EXPORT_DIR" = "" ]; then
     echo "Please set env variable WARP_EXPORT_DIR"
