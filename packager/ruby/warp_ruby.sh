@@ -48,6 +48,9 @@ FROM=$TMPDIR/$RUBY_VERSION
 echo 'puts $LOAD_PATH.join(":")' | $FROM/bin/ruby > $FROM/bin/.rubylib.orig
 check_result
 
+rm -f $FROM/bin/.rubylib
+check_result
+
 if [ -d $FROM/gemsets ]; then
   if [ "$PACKAGE_GEMSETS" != "1" ]; then
     echo "************************************"
