@@ -76,10 +76,11 @@ if [ "$RBENV_HAS_BEEN_INSTALLED" = "1" ]; then
       FOUND=`cat $i | grep 'rbenv init'`
       if [ "$FOUND" = "" ]; then
         echo "Modifying shell file : $i"
-        run echo "" >> $i
-        run echo "# RBENV CONFIG" >> $i
-        run echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $i
-        run echo 'eval "$(rbenv init -)"' >> $i
+        echo "" >> $i
+        check_result
+        echo "# RBENV CONFIG" >> $i
+        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $i
+        echo 'eval "$(rbenv init -)"' >> $i
       else
         echo "Startup files already modified"
       fi
