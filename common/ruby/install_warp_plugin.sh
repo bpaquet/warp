@@ -11,5 +11,7 @@ if [ -d $RBENV_DIR/plugins/warp ]; then
   check_result
 fi
 
+echo "Install warp plugin from $WARP_HOME"
+
 cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/warp
 check_result

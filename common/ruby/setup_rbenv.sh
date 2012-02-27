@@ -69,6 +69,7 @@ if [ "$CURRENT_TAG" = "" ]; then
 fi
 
 $WARP_HOME/common/ruby/install_warp_plugin.sh
+check_result
 
 if [ "$RBENV_HAS_BEEN_INSTALLED" = "1" ]; then
   for i in $HOME/.bashrc $HOME/.bash_profile $HOME/.zshrc; do

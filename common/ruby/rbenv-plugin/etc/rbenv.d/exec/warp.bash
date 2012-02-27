@@ -1,5 +1,5 @@
 BIN_PATH=$RBENV_BIN_PATH
-if [ ! -d $BIN_PATH/lib ]; then
+if [ ! -d $BIN_PATH/../lib ]; then
   BIN_PATH=`cd $BIN_PATH/../../../bin && pwd`
 fi
 
