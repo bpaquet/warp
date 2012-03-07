@@ -2,25 +2,29 @@
 
 Click [here](https://github.com/bpaquet/warp/wiki/Summary) for full documentation.
 
-You are in love with ruby, but deploying in production in a hell :
+You are in love with ruby, but deploying in production is a hell :
 
-* have to install GCC and dependencies in -dev to compile gem
-* have to compile ruby if you are using [RVM] or [rbenv]
-* running `bundle install` is too slow
+* Must install GCC and developement dependencies to compile gems
+* Must compile ruby when you are using RVM or rbenv
+* Running bundle install is very slow
 
-You are in love with [NodeJS], and you have same problems :
+If you want to avoid that, WARP is do for you !
 
-* have to install GCC to compile NodesJS and modules
-* wait for NodeJS compilation
-* wait for module download and compilation
+You are in love with [NodeJS], and you have the same problems :
 
-Another feature offered by WARP : you want to use a tools like Chef or Redmine on a server, but
+* Must install GCC to compile NodesJS and modules
+* Have to wait for NodeJS compilation
+* Have to wait for module download and compilation
 
-* you does not want to install GCC to compile Ruby and gems
-* you does not want a system ruby, and system gems as root
-* you want uninstall chef and all related chef with one command line : rm
+If you want to avoid that, WARP is do for you !
 
-WARP allow you to package an self sufficient package for Chef or Redmine.
+Another cool feature offered by WARP : you want to use tools such as Chef for your environement management or install softs like Redmine on your server, but
+
+* you do not want to install GCC to compile Ruby and gems
+* you do not want a ruby installed in your system neither a gem command as root
+* you want to be able to uninstall chef and all related chef features with one command line : rm
+
+WARP allow you to package a self sufficient package for tools such as Chef and Redmine.
 
 # How it's work :
 
