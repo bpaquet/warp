@@ -14,3 +14,12 @@ load_ruby_config() {
     LOCAL_GEMSET_HASH=`(cat Gemfile.lock && echo $LOCAL_BUNDLE_OPTIONS) | md5sum | awk '{print $1}'`
   fi
 }
+
+assert_rbenv_installed() {
+  if [ ! -d "$RBENV_DIR" ]; then
+    echo "rbenv is not installed"
+    exit 14
+  fi
+}
+
+RBENV_DIR="$HOME/.rbenv"

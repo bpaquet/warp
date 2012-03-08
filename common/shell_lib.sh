@@ -71,13 +71,6 @@ secure_cd() {
   check_result
 }
 
-assert_rbenv_installed() {
-  if [ ! -d "$RBENV_DIR" ]; then
-    echo "rbenv is not installed"
-    exit 14
-  fi
-}
-
 run() {
   CMD=$*
   # echo "Running system command _ $CMD _"
@@ -131,4 +124,3 @@ download_and_install() {
 
 START_DIR=`pwd`
 WARP_HOME=`cd $DIRNAME && cd $RELATIVE_WARP_HOME && pwd`
-RBENV_DIR="$HOME/.rbenv"

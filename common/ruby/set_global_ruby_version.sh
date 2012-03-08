@@ -4,6 +4,8 @@ DIRNAME=`dirname $0`
 RELATIVE_WARP_HOME=../../
 . $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
+load_lib ruby
+
 assert_rbenv_installed
 
 if [ "`ls $RBENV_DIR/versions | wc -l`" = "1" ]; then
