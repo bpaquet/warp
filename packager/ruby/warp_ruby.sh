@@ -20,7 +20,7 @@ if [ "$1" = "-install_rbenv" ]; then
   shift
 fi
 
-SYS_DEPENDENCIES=$*
+read_sys_dependencies
 
 FROM="$RBENV_DIR/versions/$RUBY_VERSION"
 check_directory_exists $FROM

@@ -87,6 +87,13 @@ run() {
   fi
 }
 
+read_sys_dependencies() {
+  SYS_DEPENDENCIES=""
+  if [ -f ".warp_sys_dependencies" ]; then
+    SYS_DEPENDENCIES=`cat .warp_sys_dependencies`
+  fi
+}
+
 generate_os_version() {
   echo "`lsb_release -cs`_`arch`"
 }
@@ -99,14 +106,22 @@ load_lib() {
   . $WARP_HOME/common/$1/lib_$1.sh
 }
 
+check_warp_src() {
+  if [ ! -f $HOME/.warp_src ]; then
+    echo "No file \$HOME/.warp_src found"
+    exit 42
+  fi
+  WARP_SRC=`cat $HOME/.warp_src | perl -pe 's/\/$//g'`
+}
+
 download_and_install() {
   FILENAME=$1
-  WARP_SRC=`cat $HOME/.warp_src`
-  TARGET=/tmp/toto.warp
+  check_warp_src
+  TARGET=`tmpdir`/toto.warp
   echo "Downloading file $WARP_SRC/$FILENAME.warp"
   if ! curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null ; then
     echo "Unable to download file $WARP_SRC/$FILENAME.warp"
-    rm -f $TARGET
+    rm -f `dirname`/$TARGET
     exit 87
   fi
   echo "File download successful"

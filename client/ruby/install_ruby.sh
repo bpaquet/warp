@@ -11,6 +11,7 @@ assert_rbenv_installed
 load_ruby_config
 
 if [ -d $RBENV_DIR/versions/$LOCAL_RUBY_VERSION ]; then
+  echo "Ruby $LOCAL_RUBY_VERSION is already installed"
   exit 0  
 fi
 

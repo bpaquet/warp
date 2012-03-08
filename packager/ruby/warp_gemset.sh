@@ -21,7 +21,7 @@ TARGET_NAME="${TARGET_NAME}.warp"
 
 exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
-SYS_DEPENDENCIES=$*
+read_sys_dependencies
 
 echo "Packaging gemset $LOCAL_GEMSET to $TARGET_NAME"
 echo "Bundler options : $LOCAL_BUNDLE_OPTIONS"
