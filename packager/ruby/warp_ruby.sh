@@ -67,7 +67,7 @@ echo "" >> $TMPDIR/install
 echo "common/check_dependencies.sh $SYS_DEPENDENCIES" >> $TMPDIR/install
 
 if [ "$INSTALL_RBENV" = "1" ]; then
-  echo "common/ruby/setup_rbenv.sh" >> $TMPDIR/install
+  echo "common/ruby/install_rbenv.sh" >> $TMPDIR/install
 fi
 
 cat >> $TMPDIR/install <<STOP_SUBSCRIPT
