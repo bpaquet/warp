@@ -7,11 +7,9 @@ RELATIVE_WARP_HOME=../../
 assert_rbenv_installed
 
 if [ -d $RBENV_DIR/plugins/warp ]; then
-  rm -rf $RBENV_DIR/plugins/warp
-  check_result
+  run rm -rf $RBENV_DIR/plugins/warp
 fi
 
 echo "Install warp plugin from $WARP_HOME"
 
-cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/warp
-check_result
+run cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/warp

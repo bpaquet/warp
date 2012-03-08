@@ -10,8 +10,7 @@ RBENV_GEMSET_TAG="v0.3.0"
 
 RBENV_HAS_BEEN_INSTALLED=0
 
-cd $HOME
-check_result
+secure_cd $HOME
 
 if [ ! -d .rbenv ]; then
   echo "Cloning rbenv"
@@ -19,8 +18,7 @@ if [ ! -d .rbenv ]; then
   RBENV_HAS_BEEN_INSTALLED=1
 fi
 
-cd .rbenv
-check_result
+secure_cd .rbenv
 
 CURRENT_TAG=`git log --decorate -1 | grep $RBENV_TAG`
 if [ "$CURRENT_TAG" = "" ]; then
@@ -32,15 +30,13 @@ fi
 
 [ ! -d $RBENV_DIR/plugins ] && run mkdir -p $RBENV_DIR/plugins
 
-cd $RBENV_DIR/plugins/
-check_result
+secure_cd $RBENV_DIR/plugins/
 
 if [ ! -d ruby-build ]; then
   run git clone git://github.com/sstephenson/ruby-build.git
 fi
 
-cd ruby-build
-check_result
+secure_cd ruby-build
 
 CURRENT_TAG=`git log --decorate -1 | grep $RBENV_RUBY_BUILD_TAG`
 if [ "$CURRENT_TAG" = "" ]; then
@@ -50,15 +46,13 @@ if [ "$CURRENT_TAG" = "" ]; then
   run git checkout $RBENV_RUBY_BUILD_TAG
 fi
 
-cd ..
-check_result
+secure_cd ..
 
 if [ ! -d rbenv-gemset ]; then
   run git clone git://github.com/jamis/rbenv-gemset.git
 fi
 
-cd rbenv-gemset
-check_result
+secure_cd rbenv-gemset
 
 CURRENT_TAG=`git log --decorate -1 | grep $RBENV_GEMSET_TAG`
 if [ "$CURRENT_TAG" = "" ]; then

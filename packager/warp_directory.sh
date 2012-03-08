@@ -67,8 +67,7 @@ check_result
 
 run chmod +x $TMPDIR/install
 
-cd $WARP_EXPORT_DIR
-check_result
+secure_cd $WARP_EXPORT_DIR
 
 run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR
 

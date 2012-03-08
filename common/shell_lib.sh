@@ -59,6 +59,11 @@ check_result() {
   fi
 }
 
+secure_cd() {
+  cd $1
+  check_result
+}
+
 assert_rbenv_installed() {
   if [ ! -d "$RBENV_DIR" ]; then
     echo "rbenv is not installed"
@@ -92,17 +97,14 @@ download_and_install() {
   WARP_SRC=`cat $HOME/.warp_src`
   TARGET=/tmp/toto.warp
   echo "Downloading file $WARP_SRC/$FILENAME.warp"
-  curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null
-  if [ "$?" != "0" ]; then
+  if ! curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null ; then
     echo "Unable to download file $WARP_SRC/$FILENAME.warp"
     rm -f $TARGET
     exit 87
   fi
   echo "File download successful"
-  sh $TARGET
-  check_result
-  rm $TARGET
-  check_result
+  run sh $TARGET
+  run rm $TARGET
 }
 
 START_DIR=`pwd`

@@ -48,8 +48,7 @@ FROM=$TMPDIR/$RUBY_VERSION
 echo 'puts $LOAD_PATH.join(":")' | $FROM/bin/ruby > $FROM/bin/.rubylib.orig
 check_result
 
-rm -f $FROM/bin/.rubylib
-check_result
+run rm -f $FROM/bin/.rubylib
 
 if [ -d $FROM/gemsets ]; then
   if [ "$PACKAGE_GEMSETS" != "1" ]; then
@@ -92,8 +91,7 @@ check_result
 
 run chmod +x $TMPDIR/install
 
-cd $WARP_EXPORT_DIR
-check_result
+secure_cd $WARP_EXPORT_DIR
 
 run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR
 

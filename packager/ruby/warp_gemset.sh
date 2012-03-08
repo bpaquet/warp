@@ -41,8 +41,7 @@ fi
 TMPDIR=$(tmpdir)
 run cp .rbenv-version .rbenv-gemsets Gemfile $TMPDIR
 
-cd $TMPDIR
-check_result
+secure_cd $TMPDIR
 
 run gem install bundler
 $RBENV_DIR/bin/rbenv rehash || true
@@ -56,8 +55,7 @@ if [ -d .bundle ]; then
   run mv .bundle $TMPDIR2/$LOCAL_GEMSET
 fi
 
-cd $TMPDIR2
-check_result
+secure_cd $TMPDIR2
 
 run rm -rf $TMPDIR
 
@@ -87,8 +85,7 @@ check_result
 
 run chmod +x $TMPDIR2/install
 
-cd $WARP_EXPORT_DIR
-check_result
+secure_cd $WARP_EXPORT_DIR
 
 run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR2
 
