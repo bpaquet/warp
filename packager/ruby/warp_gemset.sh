@@ -19,7 +19,7 @@ TARGET_NAME=$(generate_gemset)
 
 TARGET_NAME="${TARGET_NAME}.warp"
 
-check_not_existent $WARP_EXPORT_DIR/$TARGET_NAME
+exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
 SYS_DEPENDENCIES=$*
 

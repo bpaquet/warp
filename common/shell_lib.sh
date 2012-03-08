@@ -45,6 +45,13 @@ check_not_existent() {
   fi
 }
 
+exit_if_existent() {
+  if [ -f "$1" ]; then
+    echo "File already exist : $1, nothing to do"
+    exit 0
+  fi
+}
+
 check_existent() {
   if [ ! -f "$1" ]; then
     echo "File missing : $1"
@@ -85,7 +92,7 @@ generate_os_version() {
 }
 
 tmpdir() {
-  echo `mktemp -d /tmp/warp.XXXXXX`
+  mktemp -d /tmp/warp.XXXXXX
 }
 
 load_lib() {
