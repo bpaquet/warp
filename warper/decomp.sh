@@ -18,10 +18,11 @@ CDIR=`pwd`
 
 cd $TMPDIR
 ./install $START_DIR
+RESULT=$?
 
 cd $CDIR
 rm -rf $TMPDIR
 
-exit 0
+exit $RESULT
 
 __ARCHIVE_BELOW__
