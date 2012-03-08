@@ -10,6 +10,4 @@ if [ -d $RBENV_DIR/plugins/warp ]; then
   run rm -rf $RBENV_DIR/plugins/warp
 fi
 
-echo "Install warp plugin from $WARP_HOME"
-
 run cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/warp
