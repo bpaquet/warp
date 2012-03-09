@@ -9,15 +9,13 @@ load_lib node
 assert_nvm_installed
 
 check_existent package.json
+check_existent npm-shrinkwrap.json
 
 load_node_config
 
-if [ -h node_modules ]; then
-  if ls node_modules/ > /dev/null 2>&1 ; then
-    echo "This project has already be warped !"
-    exit 0
-  fi
-  rm node_modules
+if [ -d node_modules ]; then
+  echo "This project has already be warped !"
+  exit 0
 fi
 
 TARGET_NAME=$(generate_npm_modules)
@@ -25,7 +23,7 @@ TARGET_NAME=$(generate_npm_modules)
 echo "Installing npm modules $LOCAL_NPM_MODULES_HASH"
 
 finalize() {
-  ln -s $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH node_modules
+  cp -r $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH node_modules
 }
 
 if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH ]; then

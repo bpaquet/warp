@@ -6,7 +6,9 @@ load_node_config() {
   if [ -f package.json ]; then
     cat package.json | grep engines | sed s/[^0-9\.]//g > .node_version
     LOCAL_NODE_VERSION=`cat .node_version`
-    LOCAL_NPM_MODULES_HASH=`cat package.json | md5sum | awk '{print $1}'`
+  fi
+  if [ -f npm-shrinkwrap.json ]; then
+    LOCAL_NPM_MODULES_HASH=`cat npm-shrinkwrap.json | md5sum | awk '{print $1}'`
   fi
 }
 

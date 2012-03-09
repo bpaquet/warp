@@ -11,6 +11,7 @@ load_lib node
 check_export_directory
 
 check_existent package.json
+check_existent npm-shrinkwrap.json
 
 load_node_config
 
