@@ -9,6 +9,10 @@ load_node_config() {
   fi
   if [ -f npm-shrinkwrap.json ]; then
     LOCAL_NPM_MODULES_HASH=`cat npm-shrinkwrap.json | md5sum | awk '{print $1}'`
+  else
+    if [ -f package.json ]; then
+      LOCAL_NPM_MODULES_HASH=`cat package.json | md5sum | awk '{print $1}'`
+    fi
   fi
 }
 

@@ -9,7 +9,6 @@ load_lib node
 assert_nvm_installed
 
 check_existent package.json
-check_existent npm-shrinkwrap.json
 
 load_node_config
 
