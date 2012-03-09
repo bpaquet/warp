@@ -116,7 +116,7 @@ download_and_install() {
   echo "Downloading file $WARP_SRC/$FILENAME.warp"
   if ! curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null ; then
     echo "Unable to download file $WARP_SRC/$FILENAME.warp"
-    rm -rf `dirname $TARGET
+    rm -rf `dirname $TARGET`
     exit 87
   fi
   echo "File download successful"
