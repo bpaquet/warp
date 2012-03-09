@@ -8,6 +8,8 @@ load_lib ruby
 
 assert_rbenv_installed
 
+check_existent .rbenv-version
+
 load_ruby_config
 
 if [ -d $RBENV_DIR/versions/$LOCAL_RUBY_VERSION ]; then

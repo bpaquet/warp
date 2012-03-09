@@ -32,6 +32,7 @@ check_export_directory() {
     echo "Please set env variable WARP_EXPORT_DIR"
     exit 15
   fi
+  WARP_EXPORT_DIR=`echo $WARP_EXPORT_DIR | perl -pe 's/\/$//g'`
   if [ ! -d "$WARP_EXPORT_DIR" ]; then
     echo "WARP_EXPORT_DIR does not exist"
     exit 16
@@ -47,6 +48,7 @@ check_not_existent() {
 
 exit_if_existent() {
   if [ -f "$1" ]; then
+    touch $1
     echo "File already exist : $1, nothing to do"
     exit 0
   fi
@@ -114,7 +116,7 @@ download_and_install() {
   echo "Downloading file $WARP_SRC/$FILENAME.warp"
   if ! curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null ; then
     echo "Unable to download file $WARP_SRC/$FILENAME.warp"
-    rm -f `dirname`/$TARGET
+    rm -rf `dirname $TARGET
     exit 87
   fi
   echo "File download successful"
