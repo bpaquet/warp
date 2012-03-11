@@ -2,6 +2,10 @@
 
 SYS_DEPENDENCIES=$*
 
+if [ "$NO_CHECK_SYS_DEPENDENCIES" != "" ]; then
+  exit 0
+fi
+
 TO_BE_INSTALLED=""
 
 for i in $SYS_DEPENDENCIES; do
@@ -13,7 +17,7 @@ for i in $SYS_DEPENDENCIES; do
 done
 
 if [ "$TO_BE_INSTALLED" != "" ]; then
-  echo "Failed : missing system dependencies."
+  echo "Failed : missing system dependencies. To remove this check, please set the environment variable NO_CHECK_SYS_DEPENDENCIES"
   echo "Please run : sudo aptitude install${TO_BE_INSTALLED}"
   exit 1
 fi
