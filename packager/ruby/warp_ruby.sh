@@ -20,8 +20,6 @@ if [ "$1" = "-install_rbenv" ]; then
   shift
 fi
 
-read_sys_dependencies
-
 FROM="$RBENV_DIR/versions/$RUBY_VERSION"
 check_directory_exists $FROM
 
@@ -35,8 +33,10 @@ TARGET_NAME="${TARGET_NAME}.warp"
 
 exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
+read_sys_dependencies
+
 echo "Package ruby version from rbenv : $RUBY_VERSION"
-echo "Using system dependencies : $SYS_DEPENDENCIES"
+echo "System dependencies : $SYS_DEPENDENCIES"
 echo "Installing rbenv : $INSTALL_RBENV"
 
 TMPDIR=$(tmpdir)
@@ -45,8 +45,11 @@ run cp -r $FROM $TMPDIR
 
 FROM=$TMPDIR/$RUBY_VERSION
 
-echo 'puts $LOAD_PATH.join(":")' | $FROM/bin/ruby > $FROM/bin/.rubylib.orig
+rbenv local $RUBY_VERSION
+echo 'puts $LOAD_PATH.join(":")' | ruby > $FROM/bin/.rubylib.orig
 check_result
+
+run rm .rbenv-version
 
 run rm -f $FROM/bin/.rubylib
 
@@ -59,6 +62,8 @@ if [ -d $FROM/gemsets ]; then
     run rm -rf $FROM/gemsets
   fi
 fi
+
+automatic_update_sys_dependencies $TMPDIR/$RUBY_VERSION
 
 run cp -r $WARP_HOME/common $TMPDIR
 

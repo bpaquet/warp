@@ -23,7 +23,7 @@ exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 read_sys_dependencies
 
 echo "Packaging npm modules to $TARGET_NAME"
-echo "Sys dependencies : $SYS_DEPENDENCIES"
+echo "System dependencies : $SYS_DEPENDENCIES"
 
 TMPDIR=$(tmpdir)
 run cp .node_version package.json $TMPDIR
@@ -33,6 +33,8 @@ secure_cd $TMPDIR
 nvm_command "nvm use v`cat .node_version` && npm install"
 
 run rm .node_version package.json
+
+automatic_update_sys_dependencies $TMPDIR
 
 run cp -r $WARP_HOME/common $TMPDIR
 

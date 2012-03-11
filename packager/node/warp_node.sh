@@ -25,8 +25,6 @@ if [ "$1" = "-install_nvm" ]; then
   shift
 fi
 
-read_sys_dependencies
-
 FROM="$NVM_DIR/v$NODE_VERSION"
 check_directory_exists $FROM
 
@@ -40,8 +38,10 @@ TARGET_NAME="${TARGET_NAME}.warp"
 
 exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
+read_sys_dependencies
+
 echo "Package node version from nvm : $NODE_VERSION"
-echo "Using system dependencies : $SYS_DEPENDENCIES"
+echo "System dependencies : $SYS_DEPENDENCIES"
 echo "Installing nvm : $INSTALL_NVM"
 
 TMPDIR=$(tmpdir)
@@ -49,6 +49,8 @@ TMPDIR=$(tmpdir)
 run cp -r $FROM $TMPDIR
 
 run rm -rf $TMPDIR/v$NODE_VERSION/modules
+
+automatic_update_sys_dependencies $TMPDIR
 
 run cp -r $WARP_HOME/common $TMPDIR
 

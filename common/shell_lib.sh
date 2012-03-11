@@ -86,6 +86,17 @@ read_sys_dependencies() {
   SYS_DEPENDENCIES=""
   if [ -f ".warp_sys_dependencies" ]; then
     SYS_DEPENDENCIES=`cat .warp_sys_dependencies`
+  else
+    SYS_DEPENDENCIES="automatic"
+  fi
+}
+
+automatic_update_sys_dependencies() {
+  if [ "$SYS_DEPENDENCIES" = "automatic" ]; then
+    TARGET=$1
+    echo "Automatic system dependecies discorvery for $TARGET"
+    SYS_DEPENDENCIES=$($WARP_HOME/common/find_dependencies.sh $TARGET)
+    echo "Sys dependencies found : $SYS_DEPENDENCIES"
   fi
 }
 

@@ -25,7 +25,7 @@ read_sys_dependencies
 
 echo "Packaging gemset $LOCAL_GEMSET to $TARGET_NAME"
 echo "Bundler options : $LOCAL_BUNDLE_OPTIONS"
-echo "Sys dependencies : $SYS_DEPENDENCIES"
+echo "System dependencies : $SYS_DEPENDENCIES"
 
 ORIG_GEMSET="$RBENV_DIR/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET"
 OLD_ORIG_GEMSET="${ORIG_GEMSET}.old"
@@ -51,6 +51,9 @@ $RBENV_DIR/bin/rbenv rehash || true
 TMPDIR2=$(tmpdir)
 
 run mv $ORIG_GEMSET $TMPDIR2
+
+automatic_update_sys_dependencies $TMPDIR2
+
 if [ -d .bundle ]; then
   run mv .bundle $TMPDIR2/$LOCAL_GEMSET
 fi
