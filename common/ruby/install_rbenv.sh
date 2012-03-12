@@ -4,6 +4,8 @@ DIRNAME=`dirname $0`
 RELATIVE_WARP_HOME=../../
 . $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
+load_lib ruby
+
 RBENV_TAG="v0.3.0"
 RBENV_RUBY_BUILD_TAG="v20120216"
 RBENV_GEMSET_TAG="v0.3.0"
