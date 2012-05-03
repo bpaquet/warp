@@ -49,8 +49,6 @@ rbenv local $RUBY_VERSION
 echo 'puts $LOAD_PATH.join(":")' | ruby > $FROM/bin/.rubylib.orig
 check_result
 
-run rm .rbenv-version
-
 run rm -f $FROM/bin/.rubylib
 
 if [ -d $FROM/gemsets ]; then
