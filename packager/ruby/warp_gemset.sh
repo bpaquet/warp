@@ -39,7 +39,7 @@ if [ -d "$ORIG_GEMSET" ]; then
 fi
 
 TMPDIR=$(tmpdir)
-run cp .rbenv-version .rbenv-gemsets Gemfile $TMPDIR
+run cp .rbenv-version .rbenv-gemsets Gemfile Gemfile.lock $TMPDIR
 
 secure_cd $TMPDIR
 
