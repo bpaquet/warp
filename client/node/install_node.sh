@@ -12,7 +12,7 @@ load_node_config
 
 if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION ]; then
   echo "NVM $LOCAL_NODE_VERSION is already installed"
-  exit 0  
+  exit 0
 fi
 
 TARGET_NAME=$(generate_node_version $LOCAL_NODE_VERSION)

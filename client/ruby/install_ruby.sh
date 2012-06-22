@@ -14,7 +14,7 @@ load_ruby_config
 
 if [ -d $RBENV_DIR/versions/$LOCAL_RUBY_VERSION ]; then
   echo "Ruby $LOCAL_RUBY_VERSION is already installed"
-  exit 0  
+  exit 0
 fi
 
 TARGET_NAME=$(generate_ruby_version $LOCAL_RUBY_VERSION)
