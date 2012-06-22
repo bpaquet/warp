@@ -1,4 +1,4 @@
-. $HOME/.nvm/nvm.sh
+. $HOME/.nvm/nvm.sh || true
 
 if [ "$WARP_HOME" = "" ]; then
   WARP_HOME=$HOME/.warp
