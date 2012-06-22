@@ -4,7 +4,7 @@ generate_node_version() {
 
 load_node_config() {
   if [ -f package.json ]; then
-    cat package.json | grep engines | sed s/[^0-9\.]//g > .node_version
+    cat package.json | $WARP_HOME/common/json.sh | grep '\["engines","node"\]' | awk '{print $2}' | perl -pe 's/"//g' > .node_version
     LOCAL_NODE_VERSION=`cat .node_version`
   fi
   if [ -f npm-shrinkwrap.json ]; then

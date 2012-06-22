@@ -1,0 +1,12 @@
+. $HOME/.nvm/nvm.sh
+
+if [ "$WARP_HOME" = "" ]; then
+  WARP_HOME=$HOME/.warp
+fi
+
+NODE_VERSION=$($WARP_HOME/common/node/extract_node_version.sh)
+
+echo "Using node version $NODE_VERSION"
+nvm install v$NODE_VERSION
+
+nvm use v$NODE_VERSION
