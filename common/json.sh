@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # from https://github.com/dominictarr/JSON.sh
 
 throw () {
@@ -61,7 +63,7 @@ parse_object () {
         esac
         read -r token
         parse_value "$1" "$key"
-        obj="$obj$key:$value"        
+        obj="$obj$key:$value"
         read -r token
         case "$token" in
           '}') break ;;
