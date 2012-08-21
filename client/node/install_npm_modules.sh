@@ -8,7 +8,10 @@ load_lib node
 
 assert_nvm_installed
 
-check_existent package.json
+if [ ! -f package.json ]; then
+  echo "No package.json file found, skipping modules installation"
+  exit 0
+fi
 
 load_node_config
 
