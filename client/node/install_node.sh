@@ -10,8 +10,13 @@ assert_nvm_installed
 
 load_node_config
 
+if [ "$LOCAL_NODE_VERSION" = "" ]; then
+  echo "No node version found"
+  exit 1
+fi
+
 if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION ]; then
-  echo "NVM $LOCAL_NODE_VERSION is already installed"
+  echo "Node $LOCAL_NODE_VERSION is already installed"
   exit 0
 fi
 
