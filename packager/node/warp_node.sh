@@ -68,6 +68,7 @@ echo "Extracting node $NVM_VERSION to \${HOME}/.nvm/v$NODE_VERSION"
 mkdir -p \${HOME}/.nvm/v$NODE_VERSION
 rm -rf \${HOME}/.nvm/v$NODE_VERSION
 mv v$NODE_VERSION \${HOME}/.nvm/v$NODE_VERSION
+common/node/adjust_shebangs.sh \${HOME}/.nvm/v$NODE_VERSION
 
 echo "New node version $NODE_VERSION installed"
 
