@@ -16,9 +16,9 @@ if [ "$LOCAL_NODE_VERSION" != "" ]; then
   NODE_VERSION=$LOCAL_NODE_VERSION
 else
   NODE_VERSION=$1
+  check_not_empty $NODE_VERSION
   shift
 fi
-check_not_empty $NODE_VERSION
 
 if [ "$1" = "-install_nvm" ]; then
   INSTALL_NVM=1
