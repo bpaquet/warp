@@ -12,7 +12,7 @@ echo ""
 
 ARCHIVE=`awk '/^__ARCHIVE_BELOW__/ {print NR + 1; exit 0; }' $0`
 
-tail -n+$ARCHIVE $0 | tar xz -C $TMPDIR
+tail -n+$ARCHIVE $0 | tar xj -C $TMPDIR
 
 CDIR=`pwd`
 

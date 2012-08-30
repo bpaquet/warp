@@ -19,7 +19,7 @@ WARP=$START_DIR/$NAME
 
 cd $DIRECTORY
 
-run tar czf $ARCHIVE ./*
+run tar cjf $ARCHIVE ./*
 
 cat $WARP_HOME/warper/decomp.sh $ARCHIVE > $WARP
 check_result
