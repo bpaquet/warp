@@ -16,7 +16,7 @@ secure_cd $HOME
 
 if [ ! -d .rbenv ]; then
   echo "Cloning rbenv"
-  run git clone git://github.com/sstephenson/rbenv.git .rbenv
+  run git clone http://github.com/sstephenson/rbenv.git .rbenv
   RBENV_HAS_BEEN_INSTALLED=1
 fi
 
@@ -35,7 +35,7 @@ fi
 secure_cd $RBENV_DIR/plugins/
 
 if [ ! -d ruby-build ]; then
-  run git clone git://github.com/sstephenson/ruby-build.git
+  run git clone http://github.com/sstephenson/ruby-build.git
 fi
 
 secure_cd ruby-build
@@ -51,7 +51,7 @@ fi
 secure_cd ..
 
 if [ ! -d rbenv-gemset ]; then
-  run git clone git://github.com/jamis/rbenv-gemset.git
+  run git clone http://github.com/jamis/rbenv-gemset.git
 fi
 
 secure_cd rbenv-gemset
