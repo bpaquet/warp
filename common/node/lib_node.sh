@@ -3,13 +3,9 @@ generate_node_version() {
 }
 
 load_node_config() {
-  if [ -f .node_version ]; then
+  if [ -f package.json ]; then
+    cat package.json | $WARP_HOME/common/json.sh | grep '\["engines","node"\]' | awk '{print $2}' | perl -pe 's/"//g' > .node_version
     LOCAL_NODE_VERSION=`cat .node_version`
-  else
-    if [ -f package.json ]; then
-      cat package.json | $WARP_HOME/common/json.sh | grep '\["engines","node"\]' | awk '{print $2}' | perl -pe 's/"//g' > .node_version
-      LOCAL_NODE_VERSION=`cat .node_version`
-    fi
   fi
   if [ -f npm-shrinkwrap.json ]; then
     LOCAL_NPM_MODULES_HASH=`cat npm-shrinkwrap.json | md5sum | awk '{print $1}'`
