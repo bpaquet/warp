@@ -30,7 +30,7 @@ run cp .node_version package.json $TMPDIR
 
 secure_cd $TMPDIR
 
-nvm_command "nvm use v`cat .node_version` && npm install"
+nvm_command "nvm use v`cat .node_version` && npm install --production"
 
 run rm .node_version package.json
 
