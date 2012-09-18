@@ -13,7 +13,7 @@ if [ ! -f package.json ]; then
   exit 0
 fi
 
-if [ ! `grep dependencies package.json` ]; then
+if [ "`grep dependencies package.json`" = "" ]; then
   echo "No dependencies in package.json, skipping modules installation"
   exit 0
 fi
