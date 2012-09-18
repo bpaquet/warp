@@ -6,8 +6,6 @@ DIRNAME=`dirname $0`
 RELATIVE_WARP_HOME=../../
 . $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
-rm -f .generated_node_version
-
 load_lib node
 
 load_node_config
