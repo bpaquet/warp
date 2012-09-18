@@ -9,7 +9,7 @@ load_node_config() {
   if [ -f .node_version ]; then
     LOCAL_NODE_VERSION=`cat .node_version`
   else
-    if [ -f package.json ] && [ grep '"dependencies"' package.json ]; then
+    if [ -f package.json ]; then
       cat package.json | $WARP_HOME/common/json.sh | grep '\["engines","node"\]' | awk '{print $2}' | perl -pe 's/"//g' > .node_version
       LOCAL_NODE_VERSION=`cat .node_version | grep -e '[[:digit:]]\.[[:digit:]]\.[[:digit:]]'`
       if [ "$LOCAL_NODE_VERSION" = "" ]; then
@@ -23,7 +23,7 @@ load_node_config() {
   if [ -f npm-shrinkwrap.json ]; then
     LOCAL_NPM_MODULES_HASH=`cat npm-shrinkwrap.json | md5sum | awk '{print $1}'`
   else
-    if [ -f package.json ]; then
+    if [ -f package.json ] && [ `grep '"dependencies"' package.json` ]; then
       LOCAL_NPM_MODULES_HASH=`cat package.json | md5sum | awk '{print $1}'`
     fi
   fi

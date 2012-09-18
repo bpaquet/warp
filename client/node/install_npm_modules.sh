@@ -8,8 +8,13 @@ load_lib node
 
 assert_nvm_installed
 
-if [ ! -f package.json ]; then
+if [ ! -f package.json ] && [ `grep '"dependencies"' package.json` ]; then
   echo "No package.json file found, skipping modules installation"
+  exit 0
+fi
+
+if [ ! `grep '"dependencies"' package.json` ]; then
+  echo "No dependencies in package.json, skipping modules installation"
   exit 0
 fi
 

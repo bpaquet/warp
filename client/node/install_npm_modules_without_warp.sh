@@ -10,4 +10,4 @@ assert_nvm_installed
 
 load_node_config
 
-nvm_command "nvm use v${LOCAL_NODE_VERSION} && npm install"
+nvm_command "nvm use v${LOCAL_NODE_VERSION} && npm install --production"
