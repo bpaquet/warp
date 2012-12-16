@@ -101,17 +101,21 @@ automatic_update_sys_dependencies() {
 }
 
 generate_os_version() {
-  if [ `which lsb_release 2>&1 2> /dev/null` ]; then
-    echo "`lsb_release -cs`_`arch`"
+  if [ "$DISTRO_NAME" != "" ]; then
+    echo $DISTRO_NAME
   else
-    CONFIG=`ls /etc/*{release,version} 2> /dev/null | grep -v system | head -n 1`
-    if [ -f $CONFIG ]; then
-      NAME=`basename $CONFIG | awk -F- '{print $1}'`
-      VERSION=`cat $CONFIG | head -n 1 | awk '{print $3}'`
-      echo "${NAME}_${VERSION}_`arch`"
+    if [ `which lsb_release 2>&1 2> /dev/null` ]; then
+      echo "`lsb_release -cs`_`arch`"
     else
-      echo "Unable to detect distro"
-      exit 1
+      CONFIG=`ls /etc/*{release,version} 2> /dev/null | grep -v system | head -n 1`
+      if [ -f $CONFIG ]; then
+        NAME=`basename $CONFIG | awk -F- '{print $1}'`
+        VERSION=`cat $CONFIG | head -n 1 | awk '{print $3}' | awk -F, '{print $1}' | awk -F. '{print $1}'`
+        echo "${NAME}_${VERSION}_`arch`"
+      else
+        echo "Unable to detect distro"
+        exit 1
+      fi
     fi
   fi
 }
