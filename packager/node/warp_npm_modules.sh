@@ -26,13 +26,21 @@ echo "Packaging npm modules to $TARGET_NAME"
 echo "System dependencies : $SYS_DEPENDENCIES"
 
 TMPDIR=$(tmpdir)
-run cp .node_version package.json $TMPDIR
+
+node_files=".node_version package.json"
+
+if [ -e "npm-shrinkwrap.json" ]
+then
+  node_files="$node_files npm-shrinkwrap.json"
+fi
+
+run cp $node_files $TMPDIR
 
 secure_cd $TMPDIR
 
 nvm_command "nvm use v`cat .node_version` && npm install --production"
 
-run rm .node_version package.json
+run rm $node_files
 
 automatic_update_sys_dependencies $TMPDIR
 
