@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -e
+
+if [ "$WARP_HOME" = "" ]; then
+  WARP_HOME=$HOME/.warp
+fi
+
+dry=0
+root_path=""
+while [ "$1" != "" ]; do
+  if [ "$1" = "-d" ]; then
+    dry=1
+  else
+    root_path=$1
+  fi
+  shift
+done
+
+if [ "$root_path" = "" ]; then
+  echo "Please specify root path"
+  exit 1
+fi
+
+end=""
+if [ $dry = 1 ]; then
+  end=", dry mode"
+fi
+
+echo "Purging gemsets from $root_path$end"
+
+WARPED_PROJECTS=`find $root_path -name '.warped' -exec dirname {} \;`
+
+for i in `find $RBENV_ROOT/versions -maxdepth 3 | grep gemsets/`; do
+  ruby_version=`dirname $i`
+  ruby_version=`dirname $ruby_version`
+  ruby_version=`basename $ruby_version`
+  gemset_id=`basename $i`
+  found=0
+  for j in $WARPED_PROJECTS; do
+    release_ruby_version=`cat $j/.rbenv-version`
+    release_ruby_gemsets=`cat $j/.rbenv-gemsets`
+    if [ "$release_ruby_gemsets" = "$gemset_id" ] && [ "$release_ruby_version" = "$ruby_version" ]; then
+      found=1
+      last_found=$j
+    fi
+  done
+  if [ $found = 1 ]; then
+    echo "Gemset $ruby_version/$gemset_id is used at least by $last_found"
+  else
+    if [ $dry = 1 ]; then
+      echo "Gemset $ruby_version/$gemset_id is not used"
+    else
+      echo "Gemset $ruby_version/$gemset_id is not used, removing it"
+      rm -rf $i
+    fi
+  fi
+done

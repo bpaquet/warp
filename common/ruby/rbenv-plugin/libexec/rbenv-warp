@@ -10,6 +10,7 @@ if [ "$1" = "--complete" ]; then
   echo "install-gemset"
   echo "package-ruby"
   echo "package-gemset"
+  echo "purge-gemsets"
   echo "version"
   exit
 fi
@@ -53,6 +54,7 @@ if [ -z "$command_path" ]; then
     echo "  install-gemset"
     echo "  package-ruby [-install_rbenv]"
     echo "  package-gemset"
+    echo "  purge-gemsets [-d] root_path"
     echo "  version"
   } >&2
   exit 1
