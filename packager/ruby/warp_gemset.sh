@@ -23,9 +23,17 @@ exit_if_existent $WARP_EXPORT_DIR/$TARGET_NAME
 
 read_sys_dependencies
 
+bundler_version=`gem list bundler | grep bundler | perl -pe 's/.*\((.*)\)/\\1/'`
+
+if [ "$bundler_version" = "" ]; then
+  echo "Bundler is not installed"
+  exit 1
+fi
+
 echo "Packaging gemset $LOCAL_GEMSET to $TARGET_NAME"
 echo "Bundler options : $LOCAL_BUNDLE_OPTIONS"
 echo "System dependencies : $SYS_DEPENDENCIES"
+echo "Using bundler version : $bundler_version"
 
 ORIG_GEMSET="$RBENV_DIR/versions/$LOCAL_RUBY_VERSION/gemsets/$LOCAL_GEMSET"
 OLD_ORIG_GEMSET="${ORIG_GEMSET}.old"
@@ -43,7 +51,7 @@ run cp .rbenv-version .rbenv-gemsets Gemfile* $TMPDIR
 
 secure_cd $TMPDIR
 
-run gem install bundler
+run gem install bundler --version $bundler_version
 $RBENV_DIR/bin/rbenv rehash || true
 run bundle $LOCAL_BUNDLE_OPTIONS
 $RBENV_DIR/bin/rbenv rehash || true
