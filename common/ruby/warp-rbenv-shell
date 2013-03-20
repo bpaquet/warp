@@ -3,4 +3,4 @@
 dirname=`dirname $0`
 . $dirname/include
 
-exec $SHELL $*
+exec $SHELL "$@"
