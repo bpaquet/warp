@@ -51,10 +51,23 @@ run cp .rbenv-version .rbenv-gemsets Gemfile* $TMPDIR
 
 secure_cd $TMPDIR
 
+if [ -f Gemfile.lock ]; then
+  GEMFILE_LOCK_PRINT=`md5sum Gemfile.lock`
+fi
+
 run gem install bundler --version $bundler_version
 $RBENV_DIR/bin/rbenv rehash || true
+
 run bundle $LOCAL_BUNDLE_OPTIONS
 $RBENV_DIR/bin/rbenv rehash || true
+
+if [ "$GEMFILE_LOCK_PRINT" != "" ]; then
+  if [ "$GEMFILE_LOCK_PRINT" != "$(md5sum Gemfile.lock)" ]; then
+    echo "Gemfile.lock is not up to date, computed signature will not match."
+    echo "Please update Gemfile.lock"
+    exit 32
+  fi
+fi
 
 TMPDIR2=$(tmpdir)
 
