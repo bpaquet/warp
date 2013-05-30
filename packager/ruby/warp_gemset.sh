@@ -63,9 +63,8 @@ $RBENV_DIR/bin/rbenv rehash || true
 
 if [ "$GEMFILE_LOCK_PRINT" != "" ]; then
   if [ "$GEMFILE_LOCK_PRINT" != "$(md5sum Gemfile.lock)" ]; then
-    echo "Gemfile.lock is not up to date, computed signatures will not match."
+    echo "Your Gemfile.lock is not up to date !"
     echo "Please update Gemfile.lock"
-    exit 32
   fi
 fi
 
