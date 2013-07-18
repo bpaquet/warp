@@ -47,7 +47,7 @@ if [ -d "$ORIG_GEMSET" ]; then
 fi
 
 TMPDIR=$(tmpdir)
-run cp .rbenv-version .rbenv-gemsets Gemfile* $TMPDIR
+run rsync -ah ./ $TMPDIR/
 
 secure_cd $TMPDIR
 
