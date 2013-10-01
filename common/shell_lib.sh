@@ -139,7 +139,8 @@ check_warp_src() {
 download_and_install() {
   FILENAME=$1
   check_warp_src
-  TARGET=`tmpdir`/toto.warp
+  TARGET_TMP_DIR=`tmpdir`
+  TARGET=$TARGET_TMP_DIR/toto.warp
   echo "Downloading file $WARP_SRC/$FILENAME.warp"
   if ! curl -f -s $WARP_SRC/$FILENAME.warp -o $TARGET > /dev/null ; then
     echo "Unable to download file $WARP_SRC/$FILENAME.warp"
@@ -148,7 +149,7 @@ download_and_install() {
   fi
   echo "File download successful"
   run sh $TARGET
-  run rm $TARGET
+  run rm -rf $TARGET_TMP_DIR
 }
 
 START_DIR=`pwd`
