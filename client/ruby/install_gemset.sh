@@ -9,7 +9,7 @@ load_lib ruby
 assert_rbenv_installed
 
 if [ -f .warped ]; then
-  echo "This project has already be warped !"
+  echo "This project has already been warped !"
   exit 0
 fi
 

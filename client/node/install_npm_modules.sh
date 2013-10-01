@@ -21,7 +21,7 @@ fi
 load_node_config
 
 if [ -d node_modules ]; then
-  echo "This project has already be warped !"
+  echo "This project has already been warped !"
   exit 0
 fi
 
