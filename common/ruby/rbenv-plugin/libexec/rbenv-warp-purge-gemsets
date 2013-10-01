@@ -28,7 +28,7 @@ fi
 
 echo "Purging gemsets from $root_path$end"
 
-WARPED_PROJECTS=`find $root_path -name '.warped' -exec dirname {} \; 2>/dev/null || true`
+WARPED_PROJECTS=`find $root_path \( -type d ! -exec test -x {} -a -r {} \; -prune \) -o \( -name .warped \)`
 
 for i in `find $RBENV_ROOT/versions -maxdepth 3 | grep gemsets/`; do
   ruby_version=`dirname $i`
