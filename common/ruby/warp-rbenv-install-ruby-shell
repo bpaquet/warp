@@ -1,6 +1,8 @@
 #!/bin/sh -e
 
-if [ -f .rbenv-version ] && ! rbenv versions | sed "s/^\*/ /" | awk '{print $1}' |  grep -f .rbenv-version ;  then rbenv warp install-ruby ; fi;
-
 dirname=`dirname $0`
-. $dirname/warp-rbenv-shell "$@"
+. $dirname/include
+
+if [ -f .rbenv-version ]; then rbenv warp install-ruby ; fi;
+
+exec $SHELL "$@"
