@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+dirname=`dirname $0`
+. $dirname/include
+
+if [ -f .rbenv-version ]; then rbenv warp install-ruby ; fi;
+
+exec $SHELL "$@"
