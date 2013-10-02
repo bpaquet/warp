@@ -26,27 +26,25 @@ echo "Packaging npm modules to $TARGET_NAME"
 echo "System dependencies : $SYS_DEPENDENCIES"
 
 TMPDIR=$(tmpdir)
-
-node_files=".node_version package.json"
-
-if [ -e "npm-shrinkwrap.json" ]
-then
-  node_files="$node_files npm-shrinkwrap.json"
-fi
-
-run cp $node_files $TMPDIR
+run rsync -ah ./ $TMPDIR/
 
 secure_cd $TMPDIR
 
 nvm_command "nvm use v`cat .node_version` && npm install --production"
 
-run rm $node_files
+TMPDIR2=$(tmpdir)
 
-automatic_update_sys_dependencies $TMPDIR
+run mv $TMPDIR/node_modules $TMPDIR2
 
-run cp -r $WARP_HOME/common $TMPDIR
+secure_cd $TMPDIR2
 
-cat > $TMPDIR/install <<STOP_SUBSCRIPT
+run rm -rf $TMPDIR
+
+automatic_update_sys_dependencies $TMPDIR2
+
+run cp -r $WARP_HOME/common $TMPDIR2
+
+cat > $TMPDIR2/install <<STOP_SUBSCRIPT
 #!/bin/sh -e
 
 common/check_dependencies.sh $SYS_DEPENDENCIES
@@ -61,11 +59,11 @@ echo "Done."
 STOP_SUBSCRIPT
 check_result
 
-run chmod +x $TMPDIR/install
+run chmod +x $TMPDIR2/install
 
 secure_cd $WARP_EXPORT_DIR
 
-run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR
+run $WARP_HOME/warper/warp_builder.sh $TARGET_NAME $TMPDIR2
 
-run rm -rf $TMPDIR
+run rm -rf $TMPDIR2
 
