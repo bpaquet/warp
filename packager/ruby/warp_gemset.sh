@@ -10,7 +10,7 @@ check_export_directory
 
 check_existent Gemfile
 check_existent Gemfile.lock
-check_existent .rbenv-version
+check_existent .ruby-version
 check_existent .rbenv-gemsets
 
 load_ruby_config

@@ -37,7 +37,7 @@ for i in `find $RBENV_ROOT/versions -maxdepth 3 | grep gemsets/`; do
   gemset_id=`basename $i`
   found=0
   for j in $WARPED_PROJECTS; do
-    release_ruby_version=`cat $j/.rbenv-version`
+    release_ruby_version=`cat $j/.ruby-version`
     release_ruby_gemsets=`cat $j/.rbenv-gemsets`
     if [ "$release_ruby_gemsets" = "$gemset_id" ] && [ "$release_ruby_version" = "$ruby_version" ]; then
       found=1

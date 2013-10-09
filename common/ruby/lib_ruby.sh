@@ -7,7 +7,7 @@ generate_gemset() {
 }
 
 load_ruby_config() {
-  LOCAL_RUBY_VERSION=`[ -f .rbenv-version ] && cat .rbenv-version`
+  LOCAL_RUBY_VERSION=`[ -f .ruby-version ] && cat .ruby-version`
   LOCAL_GEMSET=`[ -f .rbenv-gemsets ] && cat .rbenv-gemsets`
   LOCAL_BUNDLE_OPTIONS=`[ -f .bundle-option ] && cat .bundle-option`
   if [ -f Gemfile.lock ]; then

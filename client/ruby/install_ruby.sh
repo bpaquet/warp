@@ -8,7 +8,7 @@ load_lib ruby
 
 assert_rbenv_installed
 
-check_existent .rbenv-version
+check_existent .ruby-version
 
 load_ruby_config
 
