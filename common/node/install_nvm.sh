@@ -12,7 +12,7 @@ secure_cd $HOME
 
 if [ ! -d .nvm ]; then
   echo "Cloning nvm"
-  run git clone http://github.com/creationix/nvm.git .nvm
+  run git clone $(process_git_url git://github.com/creationix/nvm.git) .nvm
   NVM_HAS_BEEN_INSTALLED=1
 fi
 

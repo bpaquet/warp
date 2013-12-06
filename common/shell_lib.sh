@@ -11,7 +11,7 @@ check_directory_exists() {
   if [ ! -d "$1" ]; then
     echo "Non existent directory : $1"
     exit 12
-  fi 
+  fi
 }
 
 check_mutiple_values() {
@@ -150,6 +150,14 @@ download_and_install() {
   echo "File download successful"
   run sh $TARGET
   run rm -rf $TARGET_TMP_DIR
+}
+
+process_git_url() {
+  GIT=$1
+  if [ "$GIT_PREFIX" != "" ]; then
+    GIT=$(echo $GIT | perl -pe "s/^git:/$GIT_PREFIX:/")
+  fi
+  echo $GIT
 }
 
 START_DIR=`pwd`
