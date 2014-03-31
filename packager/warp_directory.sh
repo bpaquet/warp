@@ -35,7 +35,7 @@ echo "Sys dependencies : $SYS_DEPENDENCIES"
 
 TMPDIR=$(tmpdir)
 
-run cp -r $FROM $TMPDIR/data
+run cp -d -r $FROM $TMPDIR/data
 
 run cp -r $WARP_HOME/common $TMPDIR
 
