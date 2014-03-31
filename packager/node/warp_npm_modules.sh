@@ -26,7 +26,7 @@ echo "Packaging npm modules to $TARGET_NAME"
 echo "System dependencies : $SYS_DEPENDENCIES"
 
 TMPDIR=$(tmpdir)
-run rsync -ah ./ $TMPDIR/
+run rsync --exclude node_modules -ah ./ $TMPDIR/
 
 secure_cd $TMPDIR
 
