@@ -27,6 +27,9 @@ load_node_config() {
       LOCAL_NPM_MODULES_HASH=`cat package.json | md5sum | awk '{print $1}'`
     fi
   fi
+  if [ -f .node_external_version_command ]; then
+    LOCAL_NPM_MODULES_HASH="$LOCAL_NPM_MODULES_HASH_$(bash .node_external_version_command)"
+  fi
 }
 
 generate_npm_modules() {
