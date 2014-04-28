@@ -11,7 +11,7 @@ TO_BE_INSTALLED=""
 for i in $SYS_DEPENDENCIES; do
   echo "Checking system dependency : $i"
   if [ `which dpkg 2> /dev/null` ]; then
-    RES=$(dpkg -l $i | grep "^ii")
+    RES=$(dpkg -l $i | grep "^.i")
     if [ "$RES" = "" ]; then
       TO_BE_INSTALLED="$TO_BE_INSTALLED $i"
     fi
