@@ -28,7 +28,7 @@ load_node_config() {
     fi
   fi
   if [ -f .node_external_version_command ]; then
-    LOCAL_NPM_MODULES_HASH="$LOCAL_NPM_MODULES_HASH_$(bash .node_external_version_command)"
+    LOCAL_NPM_MODULES_HASH="${LOCAL_NPM_MODULES_HASH}_$(bash .node_external_version_command)"
   fi
 }
 
