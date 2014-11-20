@@ -94,7 +94,7 @@ read_sys_dependencies() {
 automatic_update_sys_dependencies() {
   if [ "$SYS_DEPENDENCIES" = "automatic" ]; then
     TARGET=$1
-    echo "Automatic system dependecies discorvery for $TARGET"
+    echo "Automatic system dependecies discovery for $TARGET"
     SYS_DEPENDENCIES=$($WARP_HOME/common/find_dependencies.sh $TARGET)
     echo "Sys dependencies found : $SYS_DEPENDENCIES"
   fi
