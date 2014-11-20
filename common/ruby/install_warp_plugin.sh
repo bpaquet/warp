@@ -9,7 +9,7 @@ load_lib ruby
 assert_rbenv_installed
 
 if [ -d $RBENV_DIR/plugins/warp ]; then
-  run rm -rf $RBENV_DIR/plugins/warp
+  run rm -rf $RBENV_DIR/plugins/warp $RBENV_DIR/plugins/00warp
 fi
 
-run cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/warp
+run cp -r $WARP_HOME/common/ruby/rbenv-plugin $RBENV_DIR/plugins/00warp
