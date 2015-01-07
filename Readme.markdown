@@ -26,7 +26,7 @@ Another cool feature offered by WARP : you want to use tools such as Chef for yo
 
 WARP allow you to package a self sufficient package for tools such as Chef and Redmine.
 
-# How it's work :
+# How it works :
 
 * use Warp on your Continuous Integration Server to create binary packages, containing ruby binary version, gemsets, node binary version, nodes modules ...
 * expose these packages in a HTTP server
