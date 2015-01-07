@@ -30,7 +30,7 @@ TARGET_NAME=$(generate_npm_modules)
 echo "Installing npm modules $LOCAL_NPM_MODULES_HASH"
 
 finalize() {
-  cp -r $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH node_modules
+  ln -s $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH node_modules
 }
 
 if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH ]; then
