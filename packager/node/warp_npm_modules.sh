@@ -50,9 +50,9 @@ cat > $TMPDIR2/install <<STOP_SUBSCRIPT
 common/check_dependencies.sh $SYS_DEPENDENCIES
 
 echo "Extracting npm modules $LOCAL_NPM_MODULES_HASH to \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH"
-mkdir -p \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
 rm -rf \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
-mv node_modules \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
+mkdir -p \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
+mv node_modules \${HOME}/.nvm/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/
 
 echo "Done."
 

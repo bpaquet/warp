@@ -30,7 +30,14 @@ TARGET_NAME=$(generate_npm_modules)
 echo "Installing npm modules $LOCAL_NPM_MODULES_HASH"
 
 finalize() {
-  ln -s $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH node_modules
+  # backward compat
+  if [ ! -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules ]; then
+    mv $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH $NVM_DIR/v$LOCAL_NODE_VERSION/modules/old
+    mkdir -p $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
+    mv $NVM_DIR/v$LOCAL_NODE_VERSION/modules/old $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules
+  fi
+  # end of backward compat
+  ln -s $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules node_modules
 }
 
 if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH ]; then
