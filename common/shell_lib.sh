@@ -162,3 +162,8 @@ process_git_url() {
 
 START_DIR=`pwd`
 WARP_HOME=`cd $DIRNAME && cd $RELATIVE_WARP_HOME && pwd`
+
+if [ "$git_protocol" = "" ]; then
+  git_protocol="git"
+fi
+
