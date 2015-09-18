@@ -25,7 +25,13 @@ if [ "$1" = "-install_nvm" ]; then
   shift
 fi
 
+# Compat with old nvm versions
 FROM="$NVM_DIR/v$NODE_VERSION"
+OUT_DIR=".nvm/v$NODE_VERSION"
+if [ ! -d "$FROM" ]; then
+  FROM="$NVM_DIR/versions/node/v$NODE_VERSION"
+  OUT_DIR=".nvm/versions/node/v$NODE_VERSION"
+fi
 check_directory_exists $FROM
 
 TARGET_NAME=$(generate_node_version $NODE_VERSION)
@@ -64,11 +70,11 @@ fi
 
 cat >> $TMPDIR/install <<STOP_SUBSCRIPT
 
-echo "Extracting node $NVM_VERSION to \${HOME}/.nvm/v$NODE_VERSION"
-mkdir -p \${HOME}/.nvm/v$NODE_VERSION
-rm -rf \${HOME}/.nvm/v$NODE_VERSION
-mv v$NODE_VERSION \${HOME}/.nvm/v$NODE_VERSION
-common/node/adjust_shebangs.sh \${HOME}/.nvm/v$NODE_VERSION
+echo "Extracting node $NVM_VERSION to \${HOME}/$OUT_DIR"
+mkdir -p \${HOME}/$OUT_DIR
+rm -rf \${HOME}/$OUT_DIR
+mv v$NODE_VERSION \${HOME}/$OUT_DIR
+common/node/adjust_shebangs.sh \${HOME}/$OUT_DIR
 
 echo "New node version $NODE_VERSION installed"
 
