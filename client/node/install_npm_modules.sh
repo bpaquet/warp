@@ -29,18 +29,23 @@ TARGET_NAME=$(generate_npm_modules)
 
 echo "Installing npm modules $LOCAL_NPM_MODULES_HASH"
 
+VERSION_PATH="$NVM_DIR/v$LOCAL_NODE_VERSION"
+if [ ! -d "$VERSION_PATH" ]; then
+  VERSION_PATH="$NVM_DIR/versions/node/v$LOCAL_NODE_VERSION"
+fi
+
 finalize() {
   # backward compat
-  if [ ! -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules ]; then
-    mv $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH $NVM_DIR/v$LOCAL_NODE_VERSION/modules/old
-    mkdir -p $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH
-    mv $NVM_DIR/v$LOCAL_NODE_VERSION/modules/old $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules
+  if [ ! -d $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH/node_modules ]; then
+    mv $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH $VERSION_PATH/modules/old
+    mkdir -p $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH
+    mv $VERSION_PATH/modules/old $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH/node_modules
   fi
   # end of backward compat
-  ln -s $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH/node_modules node_modules
+  ln -s $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH/node_modules node_modules
 }
 
-if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH ]; then
+if [ -d $VERSION_PATH/modules/$LOCAL_NPM_MODULES_HASH ]; then
   echo "npm modules $LOCAL_NPM_MODULES_HASH already present"
   finalize
   exit 0
