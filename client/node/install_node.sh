@@ -15,7 +15,12 @@ if [ "$LOCAL_NODE_VERSION" = "" ]; then
   exit 1
 fi
 
-if [ -d $NVM_DIR/v$LOCAL_NODE_VERSION ]; then
+if [ -d "$NVM_DIR/v$LOCAL_NODE_VERSION" ]; then
+  echo "Node $LOCAL_NODE_VERSION is already installed"
+  exit 0
+fi
+
+if [ -d "$NVM_DIR/versions/node/v$LOCAL_NODE_VERSION" ]; then
   echo "Node $LOCAL_NODE_VERSION is already installed"
   exit 0
 fi
