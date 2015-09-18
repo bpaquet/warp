@@ -4,7 +4,7 @@ DIRNAME=`dirname $0`
 RELATIVE_WARP_HOME=../../
 . $DIRNAME/$RELATIVE_WARP_HOME/common/shell_lib.sh
 
-NVM_TAG="v26.1"
+NVM_TAG="v0.26.1"
 
 NVM_HAS_BEEN_INSTALLED=0
 
