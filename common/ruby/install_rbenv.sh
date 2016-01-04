@@ -6,9 +6,17 @@ RELATIVE_WARP_HOME=../../
 
 load_lib ruby
 
-RBENV_TAG="v0.4.0"
-RBENV_RUBY_BUILD_TAG="v20150818"
-RBENV_GEMSET_TAG="v0.5.8"
+if [ "$RBENV_TAG" = "" ]; then
+  RBENV_TAG="v0.4.0"
+fi
+
+if [ "$RBENV_RUBY_BUILD_TAG" = "" ]; then
+  RBENV_RUBY_BUILD_TAG="v20150818"
+fi
+
+if [ "$RBENV_GEMSET_TAG" = "" ]; then
+  RBENV_GEMSET_TAG="v0.5.8"
+fi
 
 RBENV_HAS_BEEN_INSTALLED=0
 
