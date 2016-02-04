@@ -19,8 +19,10 @@ WARP=$START_DIR/$NAME
 
 cd $DIRECTORY
 
+check_not_existent $ARCHIVE
 run tar cjf $ARCHIVE ./*
 
+check_not_existent $WARP
 cat $WARP_HOME/warper/decomp.sh $ARCHIVE > $WARP
 check_result
 
