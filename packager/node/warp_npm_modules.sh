@@ -35,7 +35,11 @@ if [ ! -d "$NVM_DIR/v$LOCAL_NODE_VERSION" ]; then
   OUT_DIR=".nvm/versions/node/v$LOCAL_NODE_VERSION/modules/$LOCAL_NPM_MODULES_HASH"
 fi
 
-nvm_command "nvm use v`cat .node_version` && npm install --production"
+if [ "$NODE_ENV" = "" ]; then
+  NODE_ENV=production
+fi
+
+nvm_command "nvm use v`cat .nvmrc` && npm install --$NODE_ENV"
 
 TMPDIR2=$(tmpdir)
 
