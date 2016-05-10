@@ -20,6 +20,6 @@ SLASH_HOME_PATH=`cd $HOME && pwd | sed -e 's/\//\\\\\//g'`
 
 for i in `ls $BIN_PATH`; do
   if [ `file -b $BIN_PATH/$i | awk '{print $1}'` != "ELF" ]; then
-    sed -i -e "s/^#!\/.*\/\.nvm\/v/#!${SLASH_HOME_PATH}\/.nvm\/v/" $BIN_PATH/$i
+    sed --follow-symlinks -i -e "s/^#!\/.*\/\.nvm\/v/#!${SLASH_HOME_PATH}\/.nvm\/v/" $BIN_PATH/$i
   fi
 done
